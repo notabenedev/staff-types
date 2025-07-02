@@ -1,0 +1,28 @@
+{
+    "name": "notabenedev/staff-types",
+    "description": "Add types to staff package",
+    "type": "library",
+    "require": {
+        "notabenedev/site-staff": "@dev"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Notabenedev\\StaffTypes\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nataliess",
+            "email": "n.borisova@me.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "notabenedev\\StaffTypes\\StaffTypesServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev"
+}
