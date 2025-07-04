@@ -44,5 +44,15 @@ class StaffParamUnit extends Model
             ->withTimestamps();;
     }
 
+    /**
+     * Change demonstrated status
+     *
+     */
+    public function demonstrated()
+    {
+        $this->demonstrated_at = $this->demonstrated_at  ? null : now();
+        $this->save();
+    }
+
 
 }

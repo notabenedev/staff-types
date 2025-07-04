@@ -8,5 +8,7 @@
     php artisan make:staff-types
                             {--all : Run all}
                             {--models : Export models}
+                            {--policies : Export and fill policies}
+                            {--controllers : Export controllers}
 
     npm run dev

@@ -1,15 +1,15 @@
 @extends("admin.layout")
 
-@section("page-title", config("staff-types.siteStaffTypeName")." - создать")
+@section("page-title", config("staff-types.siteStaffParamUnitName")." - создать")
 
-@section('header-title', config("staff-types.siteStaffTypeName")." - создать")
+@section('header-title', config("staff-types.siteStaffParamUnitName")." - создать")
 
 @section('admin')
-    @include("staff-types::admin.staff-types.includes.pills")
+    @include("staff-types::admin.staff-param-units.includes.pills")
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                @php($route = route("admin.staff-types.store"))
+                @php($route = route("admin.staff-param-units.store"))
                 <form action="{{ $route }}" method="post" enctype="multipart/form-data">
                     @csrf
 

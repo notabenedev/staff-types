@@ -53,7 +53,7 @@ class StaffTypesMakeCommand extends BaseConfigModelCommand
      * Make Controllers
      */
     protected $controllers = [
-        "Admin" => ["StaffTypeController"],
+        "Admin" => ["StaffTypeController", "StaffParamUnitController"],
     ];
 
     /**
@@ -66,7 +66,13 @@ class StaffTypesMakeCommand extends BaseConfigModelCommand
             "title" => "Типы сотрудников",
             "slug" => "staff-types",
             "policy" => "StaffTypePolicy",
-        ]
+        ],
+        [
+            "title" => "Группы параметров для сотрудников",
+            "slug" => "staff-param-units",
+            "policy" => "StaffParamUnitPolicy",
+        ],
+
     ];
     /**
      * Create a new command instance.
@@ -96,47 +102,7 @@ class StaffTypesMakeCommand extends BaseConfigModelCommand
         if ($this->option("policies") || $all) {
             $this->makeRules();
         }
-        if ($this->option("menu") || $all) {
-            $this->makeMenu();
-        }
         return 0;
-    }
-
-    /**
-     * @return void
-     */
-    protected function makeMenu()
-    {
-        try {
-            $menu = Menu::query()
-                ->where('key', 'admin')
-                ->firstOrFail();
-        }
-        catch (\Exception $e) {
-            return;
-        }
-
-        $title = config("staff-types.sitePackageName");
-        $itemData = [
-            'title' => $title,
-            'template' => "staff-types::admin.menu",
-            'url' => "#",
-            'ico' => 'far fa-newspaper',
-            'menu_id' => $menu->id,
-        ];
-
-        try {
-            $menuItem = MenuItem::query()
-                ->where("menu_id", $menu->id)
-                ->where('title', $title)
-                ->firstOrFail();
-            $menuItem->update($itemData);
-            $this->info("Элемент меню '$title' обновлен");
-        }
-        catch (\Exception $e) {
-            MenuItem::create($itemData);
-            $this->info("Элемент меню '$title' создан");
-        }
     }
 
 }

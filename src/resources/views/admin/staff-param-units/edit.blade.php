@@ -1,17 +1,18 @@
 @extends("admin.layout")
 
-@section("page-title", config("staff-types.siteStaffTypeName")." - создать")
+@section("page-title", "{$unit->title} - ".config("staff-types.siteStaffParamUnitName"))
 
-@section('header-title', config("staff-types.siteStaffTypeName")." - создать")
+@section('header-title',  config("staff-types.siteStaffParamUnitName")." - {$unit->title}")
+
 
 @section('admin')
-    @include("staff-types::admin.staff-types.includes.pills")
+    @include("staff-types::admin.staff-param-units.includes.pills")
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                @php($route = route("admin.staff-types.store"))
-                <form action="{{ $route }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route("admin.staff-param-units.update", ["unit" => $unit]) }}" method="post" enctype="multipart/form-data">
                     @csrf
+                    @method("put")
 
                     <div class="form-group">
                         <label for="title">Заголовок <span class="text-danger">*</span></label>
@@ -19,7 +20,7 @@
                                id="title"
                                name="title"
                                required
-                               value="{{ old('title') }}"
+                               value="{{ old("title", $unit->title) }}"
                                class="form-control @error("title") is-invalid @enderror">
                         @error("title")
                             <div class="invalid-feedback" role="alert">
@@ -33,7 +34,7 @@
                         <input type="text"
                                id="slug"
                                name="slug"
-                               value="{{ old('slug') }}"
+                               value="{{ old("slug", $unit->slug) }}"
                                class="form-control @error("slug") is-invalid @enderror">
                         @error("slug")
                             <div class="invalid-feedback" role="alert">
@@ -44,7 +45,7 @@
 
                     <div class="btn-group"
                          role="group">
-                        <button type="submit" class="btn btn-success">Добавить</button>
+                        <button type="submit" class="btn btn-success">Обновить</button>
                     </div>
                 </form>
             </div>

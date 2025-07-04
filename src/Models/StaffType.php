@@ -43,7 +43,7 @@ class StaffType extends Model
     }
 
     /**
-     * Change publish status
+     * Change exported status
      *
      */
     public function exported()
