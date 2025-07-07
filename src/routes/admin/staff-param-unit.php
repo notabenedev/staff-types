@@ -21,7 +21,6 @@ Route::group([
         Route::put("/{unit}", [StaffParamUnitController::class, "update"])->name("update");
         Route::delete("/{unit}", [StaffParamUnitController::class, "destroy"])->name("destroy");
 
-
         // приоритет
         Route::put("/tree/priority", [StaffParamUnitController::class,"changeItemsPriority"])
             ->name("item-priority");
@@ -31,9 +30,5 @@ Route::group([
                 ->name("demonstrate");
 
     });
-
-
-
-
 }
 );

@@ -44,7 +44,7 @@
                         </div>
                         @can("update", \App\StaffParamUnit::class)
                             <confirm-form :id="'{{ "demonstrate-form-{$item->id}" }}'" text="Это изменит статус выгрузки в файл экспорта!" confirm-text="Да, изменить!">
-                                <template>
+                                <template v-if="true">
                                     <form action="{{ route('admin.staff-param-units.demonstrate', ["unit" => $item]) }}"
                                           id="demonstrate-form-{{ $item->id }}"
                                           class="btn-group"
@@ -57,7 +57,7 @@
                         @endcan
                         @can("delete", \App\StaffParamUnit::class)
                             <confirm-form :id="'{{ "delete-form-{$item->id}" }}'">
-                                <template>
+                                <template v-if="true">
                                     <form action="{{ route('admin.staff-param-units.destroy', ["unit" => $item]) }}"
                                           id="delete-form-{{ $item->id }}"
                                           class="btn-group"
