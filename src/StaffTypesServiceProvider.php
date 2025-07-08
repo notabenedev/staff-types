@@ -2,6 +2,7 @@
 
 namespace Notabenedev\StaffTypes;
 
+use App\StaffType;
 use Illuminate\Support\ServiceProvider;
 use Notabenedev\StaffTypes\Console\Commands\StaffTypesMakeCommand;
 
@@ -49,6 +50,15 @@ class StaffTypesServiceProvider extends ServiceProvider
 
         // Подключение шаблонов.
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'staff-types');
+
+        view()->composer([
+            "staff-types::admin.staff-param-units.create",
+            "staff-types::admin.staff-param-units.edit",
+
+        ], function ($view){
+            $types = StaffType::all();
+            $view->with("types", $types);
+        });
 
     }
 }

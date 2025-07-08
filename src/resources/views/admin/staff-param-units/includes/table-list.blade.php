@@ -34,27 +34,8 @@
                                     </button>
                                 @endcan
                             </div>
-                            @can("update", \App\StaffParamUnit::class)
-                                <div class="btn-group btn-group-sm">
-                                    <button type="button" class="btn btn-{{ $item->demonstrated_at ? "success" : "secondary" }}" data-confirm="{{ "demonstrate-form-{$item->id}" }}">
-                                        <i class="fas fa-toggle-{{ $item->demonstrated_at ? "on" : "off" }}"></i>
-                                    </button>
-                                </div>
-                            @endcan
                         </div>
-                        @can("update", \App\StaffParamUnit::class)
-                            <confirm-form :id="'{{ "demonstrate-form-{$item->id}" }}'" text="Это изменит статус выгрузки в файл экспорта!" confirm-text="Да, изменить!">
-                                <template v-if="true">
-                                    <form action="{{ route('admin.staff-param-units.demonstrate', ["unit" => $item]) }}"
-                                          id="demonstrate-form-{{ $item->id }}"
-                                          class="btn-group"
-                                          method="post">
-                                        @csrf
-                                        @method("put")
-                                    </form>
-                                </template>
-                            </confirm-form>
-                        @endcan
+
                         @can("delete", \App\StaffParamUnit::class)
                             <confirm-form :id="'{{ "delete-form-{$item->id}" }}'">
                                 <template v-if="true">

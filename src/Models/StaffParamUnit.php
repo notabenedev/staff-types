@@ -40,8 +40,7 @@ class StaffParamUnit extends Model
      */
     public function types(){
         return $this->belongsToMany(\App\StaffType::class,"staff_type_staff_param_unit")
-            ->orderBy("priority")
-            ->withTimestamps();;
+            ->withTimestamps();
     }
 
     /**
@@ -52,6 +51,36 @@ class StaffParamUnit extends Model
     {
         $this->demonstrated_at = $this->demonstrated_at  ? null : now();
         $this->save();
+    }
+
+    /**
+     * Есть ли Тип у группы параметров
+     *
+     * @param $id
+     * @return mixed
+     */
+
+    public function hasType($id)
+    {
+        return $this->types->where('id',$id)->count();
+    }
+
+    /**
+     * Обновить типы.
+     *
+     * @param $userInput
+     */
+    public function updateTypes($userInput)
+    {
+        $typeIds = [];
+        foreach ($userInput as $key => $value) {
+            if (strstr($key, "check-") == false) {
+                continue;
+            }
+            $typeIds[] = $value;
+        }
+        $this->types()->sync($typeIds);
+        //$this->forgetCache();
     }
 
 

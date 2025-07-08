@@ -25,10 +25,6 @@ Route::group([
         Route::put("/tree/priority", [StaffParamUnitController::class,"changeItemsPriority"])
             ->name("item-priority");
 
-        // показать группу в файле выгрузки
-        Route::put("/{unit}/demonstrate", [StaffParamUnitController::class,"demonstrate"])
-                ->name("demonstrate");
-
     });
 }
 );

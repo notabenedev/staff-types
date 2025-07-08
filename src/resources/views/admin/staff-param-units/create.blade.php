@@ -41,7 +41,28 @@
                             </div>
                         @enderror
                     </div>
+                    <div class="my-3">
+                        @isset($types)
+                            <label>{{ config("staff-types.siteStaffTypesName") }}:</label>
+                            @include("staff-types::admin.staff-types.includes.tree-checkbox", ['types' => $types])
 
+                        @endisset
+                    </div>
+                    <div class="my-3">
+                        <hr>
+                        <label>Название группы в файле выгрузки:</label>
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input"
+                                   type="checkbox"
+                                   {{ old('demonstrated_at') ? "checked" : "" }}
+                                   value="1"
+                                   id="demonstratedBtn"
+                                   name="demonstrated-btn">
+                            <label class="custom-control-label" for="demonstratedBtn">
+                                Отобразить
+                            </label>
+                        </div>
+                    </div>
                     <div class="btn-group"
                          role="group">
                         <button type="submit" class="btn btn-success">Добавить</button>

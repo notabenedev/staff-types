@@ -58,6 +58,7 @@ class StaffParamUnitController extends Controller
     {
         $this->storeValidator($request->all());
         $item = StaffParamUnit::create($request->all());
+        $this->demonstrate($item, $request->get("demonstrated-btn"));
 
         return redirect()
             ->route("admin.staff-param-units.show", ["unit" => $item])
@@ -97,9 +98,18 @@ class StaffParamUnitController extends Controller
             $names = false;
         }
 
+        $typesCount = isset($unit->types)? $unit->types->count(): null;
+        if ($typesCount) {
+            $types = $unit->types()->get();
+        }
+        else {
+            $types = false;
+        }
+
         return view("staff-types::admin.staff-param-units.show", [
             "unit" => $unit,
             "names" => $names,
+            "types" => $types,
         ] );
     }
 
@@ -126,6 +136,8 @@ class StaffParamUnitController extends Controller
     public function update(Request $request, StaffParamUnit $unit)
     {
         $this->updateValidator($request->all(), $unit);
+        $unit->updateTypes($request->all(), true);
+        $this->demonstrate($unit, $request->get("demonstrated-btn"));
         $unit->update($request->all());
 
         return redirect()
@@ -170,25 +182,18 @@ class StaffParamUnitController extends Controller
 
 
     /**
-     * Demonstrate unit in the export file
-     *
      * @param StaffParamUnit $unit
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
+     * @param $check
+     * @return void
      */
-
-    public function demonstrate(StaffParamUnit $unit)
+    protected function demonstrate(StaffParamUnit $unit, $check)
     {
-        $this->authorize("update", $unit);
-
-        $unit->demonstrated();
-
-        return
-                redirect()
-                ->back()
-                ->with("success", "Успешно изменено");
-
+        $checkStatus = $check ? 1 : null;
+        $status = $unit->demonstrated_at ? 1 : null;
+        if ($status !== $checkStatus)
+            $unit->demonstrated();
     }
+
+
 
 }

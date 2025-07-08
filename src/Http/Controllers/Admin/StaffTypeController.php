@@ -90,6 +90,7 @@ class StaffTypeController extends Controller
      */
     public function show(StaffType $type)
     {
+        // units
         $unitsCount = isset($type->units)? $type->units->count(): null;
         if ($unitsCount) {
             $units = $type->units()->orderBy("priority")->get();
