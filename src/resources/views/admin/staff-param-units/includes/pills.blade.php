@@ -49,6 +49,14 @@
                         </li>
                     @endcan
 
+                    @can("viewAny", \App\StaffParamName::class)
+                            <li class="nav-item">
+                                <a href="{{ route("admin.staff-param-units.staff-param-names.index", ["unit" => $unit]) }}"
+                                   class="nav-link{{ strstr($currentRoute, "staff-param-names.") !== false ? " active" : "" }}">
+                                    Параметры
+                                </a>
+                            </li>
+                    @endcan
 
                     @can("delete", $unit)
                         <li class="nav-item">

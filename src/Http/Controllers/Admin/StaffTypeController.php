@@ -14,7 +14,7 @@ class StaffTypeController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->authorizeResource(StaffType::class, "type");
+        $this->authorizeResource(StaffType::class, "staff-types");
     }
 
     /**

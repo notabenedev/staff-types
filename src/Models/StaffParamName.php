@@ -11,6 +11,11 @@ class StaffParamName extends Model
     use HasFactory;
     use ShouldSlug;
 
+    const ALLOW_TYPES = [
+        "string" => "Строка",
+        "int" => "Число",
+        "bool" => "Логическое",
+    ];
     protected $fillable = [
         "title",
         "slug",
@@ -35,7 +40,24 @@ class StaffParamName extends Model
         return $this->belongsTo(\App\StaffParamUnit::class,"staff_param_unit_id")->withDefault(null);
     }
 
+    /**
+     * Human value type
+     *
+     * @return string
+     */
 
+    public function getValueTypeHumanAttribute(){
+        return $this::ALLOW_TYPES[$this->value_type];
+    }
 
+    /**
+     * Change expected status
+     *
+     */
+    public function expected()
+    {
+        $this->expected_at = $this->expected_at  ? null : now();
+        $this->save();
+    }
 
 }

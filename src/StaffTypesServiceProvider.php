@@ -55,6 +55,7 @@ class StaffTypesServiceProvider extends ServiceProvider
         if (config("staff-types.staffTypesAdminRoutes")) {
             $this->loadRoutesFrom(__DIR__."/routes/admin/staff-type.php");
             $this->loadRoutesFrom(__DIR__."/routes/admin/staff-param-unit.php");
+            $this->loadRoutesFrom(__DIR__."/routes/admin/staff-param-name.php");
         }
 
         // Подключение шаблонов.

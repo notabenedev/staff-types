@@ -14,7 +14,7 @@
                     @csrf
                     @method("put")
 
-                    <div class="form-group">
+                    <div class="my-3">
                         <label for="title">Заголовок <span class="text-danger">*</span></label>
                         <input type="text"
                                id="title"
@@ -29,7 +29,7 @@
                         @enderror
                     </div>
 
-                    <div class="form-group">
+                    <div class="my-3">
                         <label for="slug">Адресная строка</label>
                         <input type="text"
                                id="slug"
@@ -57,7 +57,7 @@
                         <div class="custom-control custom-checkbox">
                             <input class="custom-control-input"
                                    type="checkbox"
-                                   {{ (old('demonstated_at') || $unit->demonstrated_at) ? "checked" : "" }}
+                                   {{ (old('demonstrated_at') || $unit->demonstrated_at) ? "checked" : "" }}
                                    value="1"
                                    id="demonstratedBtn"
                                    name="demonstrated-btn">

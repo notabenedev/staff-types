@@ -14,7 +14,7 @@ class StaffParamUnitController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->authorizeResource(StaffParamUnit::class, "type");
+        $this->authorizeResource(StaffParamUnit::class, "staff-param-units");
     }
 
     /**

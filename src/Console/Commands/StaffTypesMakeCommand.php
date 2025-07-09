@@ -53,7 +53,7 @@ class StaffTypesMakeCommand extends BaseConfigModelCommand
      * Make Controllers
      */
     protected $controllers = [
-        "Admin" => ["StaffTypeController", "StaffParamUnitController"],
+        "Admin" => ["StaffTypeController", "StaffParamUnitController", "StaffParamNameController"],
     ];
 
     /**
@@ -71,6 +71,11 @@ class StaffTypesMakeCommand extends BaseConfigModelCommand
             "title" => "Группы параметров для сотрудников",
             "slug" => "staff-param-units",
             "policy" => "StaffParamUnitPolicy",
+        ],
+        [
+            "title" => "Имена параметров для групп сотрудников",
+            "slug" => "staff-param-names",
+            "policy" => "StaffParamNamePolicy",
         ],
 
     ];
