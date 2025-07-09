@@ -19,6 +19,15 @@ class StaffTypesServiceProvider extends ServiceProvider
             __DIR__.'/config/staff-types.php', 'staff-types'
         );
 
+        // Facades
+        $this->app->singleton("staff-param-unit-actions", function () {
+            $class = config("staff-types.paramUnitFacade");
+            return new $class;
+        });
+        $this->app->singleton("staff-type-actions", function () {
+            $class = config("staff-types.typeFacade");
+            return new $class;
+        });
     }
 
     /**

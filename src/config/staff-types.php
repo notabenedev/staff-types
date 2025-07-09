@@ -15,5 +15,7 @@ return [
 
     "staffTypesAdminRoutes" => true,
 
+    "paramUnitFacade" => \Notabenedev\StaffTypes\Helpers\StaffParamUnitActionsManager::class,
+    "typeFacade" => \Notabenedev\StaffTypes\Helpers\StaffTypeActionsManager::class,
 
 ];

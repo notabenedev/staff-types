@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\StaffParamUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Notabenedev\StaffTypes\Facades\StaffParamUnitActions;
 
 class StaffParamUnitController extends Controller
 {
@@ -19,15 +20,14 @@ class StaffParamUnitController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      *
      */
-    public function index(Request $request)
+    public function index()
     {
 
         $collection = StaffParamUnit::query()
-                ->orderBy("priority","desc");
+                ->orderBy("priority");
         $units= $collection->get();
 
         return view("staff-types::admin.staff-param-units.index", compact("units"));
@@ -195,5 +195,51 @@ class StaffParamUnitController extends Controller
     }
 
 
+    /**
+     * Priority
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function priority(){
+        $this->authorize("update", StaffParamUnit::class);
+        $collection = StaffParamUnit::query()->orderBy("priority")->get();
+        $groups = [];
+        foreach ($collection as $item) {
+            $groups[] = [
+                "name" => $item->title,
+                "id" => $item->id,
+            ];
+        }
+        return view("staff-types::admin.staff-param-units.priority", [
+            'groups' => $groups,
+        ]);
 
+    }
+
+    /**
+     * Изменить приоритет
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changeItemsPriority(Request $request)
+    {
+        $data = $request->get("items", false);
+        if ($data) {
+            $result = StaffParamUnitActions::saveOrder($data);
+            if ($result) {
+                return response()
+                    ->json("Порядок сохранен");
+            }
+            else {
+                return response()
+                    ->json("Ошибка, что то пошло не так");
+            }
+        }
+        else {
+            return response()
+                ->json("Ошибка, недостаточно данных");
+        }
+    }
 }

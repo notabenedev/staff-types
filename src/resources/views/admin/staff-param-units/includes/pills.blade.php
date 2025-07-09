@@ -13,8 +13,14 @@
                         </a>
                     </li>
                 @endcan
-
-                @empty($unit)
+                    @can("update", \App\StaffParamUnit::class)
+                        <li class="nav-item">
+                            <a href="{{ route("admin.staff-param-units.priority") }}"
+                               class="nav-link{{ $currentRoute === "admin.staff-param-units.priority" ? " active" : "" }}">
+                                Приоритет
+                            </a>
+                        </li>
+                    @endcan
                     @can("create", \App\StaffParamUnit::class)
                         <li class="nav-item">
                             <a href="{{ route("admin.staff-param-units.create") }}"
@@ -23,26 +29,8 @@
                             </a>
                         </li>
                     @endcan
-                @else
-                    @can("create", \App\StaffParamUnit::class)
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle"
-                               data-bs-toggle="dropdown"
-                               href="#"
-                               role="button"
-                               aria-haspopup="true"
-                               aria-expanded="false">
-                                Добавить
-                            </a>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item"
-                                   href="{{ route('admin.staff-param-units.create') }}">
-                                    Основную
-                                </a>
-                            </div>
-                        </li>
-                    @endcan
 
+                @if (! empty($unit))
                     @can("view", $unit)
                         <li class="nav-item">
                             <a href="{{ route("admin.staff-param-units.show", ["unit" => $unit]) }}"
@@ -69,7 +57,7 @@
                                 <i class="fas fa-trash-alt text-danger"></i>
                             </button>
                             <confirm-form :id="'{{ "delete-form-type-{$unit->id}" }}'">
-                                <template>
+                                <template v-if="true">
                                     <form action="{{ route('admin.staff-param-units.destroy', ['unit' => $unit]) }}"
                                           id="delete-form-type-{{ $unit->id }}"
                                           class="btn-group"
