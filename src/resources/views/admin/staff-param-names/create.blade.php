@@ -2,7 +2,7 @@
 
 @section("page-title", "{$unit->title} - ")
 
-@section('header-title', "{$unit->title}")
+@section('header-title', config("staff-types.siteStaffParamUnitsName").' - '.$unit->title.' - '.config("staff-types.siteStaffParamNamesName"))
 
 @section('admin')
     @include("staff-types::admin.staff-param-names.includes.pills")

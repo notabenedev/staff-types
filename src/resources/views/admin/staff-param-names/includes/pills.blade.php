@@ -11,7 +11,14 @@
                         </a>
                     </li>
                 @endcan
-
+                @can("update", \App\StaffParamName::class)
+                        <li class="nav-item">
+                            <a href="{{ route("admin.staff-param-units.staff-param-names.priority",["unit" => $unit]) }}"
+                               class="nav-link{{ $currentRoute === "admin.staff-param-units.staff-param-names.priority" ? " active" : "" }}">
+                                Приоритет
+                            </a>
+                        </li>
+                @endcan
                 @can("create", \App\StaffParamName::class)
                     <li class="nav-item">
                         <a href="{{ route("admin.staff-param-units.staff-param-names.create", ["unit" => $unit]) }}"

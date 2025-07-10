@@ -53,7 +53,7 @@
                             <li class="nav-item">
                                 <a href="{{ route("admin.staff-param-units.staff-param-names.index", ["unit" => $unit]) }}"
                                    class="nav-link{{ strstr($currentRoute, "staff-param-names.") !== false ? " active" : "" }}">
-                                    Параметры
+                                    {{  config("staff-types.siteStaffParamNamesName")  }}
                                 </a>
                             </li>
                     @endcan

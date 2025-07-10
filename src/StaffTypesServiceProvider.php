@@ -24,6 +24,10 @@ class StaffTypesServiceProvider extends ServiceProvider
             $class = config("staff-types.paramUnitFacade");
             return new $class;
         });
+        $this->app->singleton("staff-param-name-actions", function () {
+            $class = config("staff-types.paramNameFacade");
+            return new $class;
+        });
         $this->app->singleton("staff-type-actions", function () {
             $class = config("staff-types.typeFacade");
             return new $class;

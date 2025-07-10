@@ -24,19 +24,6 @@
         </div>
     </div>
 
-    @if ($names)
-        <div class="col-12 mt-3">
-            <div class="card">
-                <div class="card-header">
-                    <h5>{{ config("staff-types.siteStaffParamNamesName") }}</h5>
-                    {{--                    <a href="{{ route("admin.staff-param-names.names-tree", ["unit" => $unit]) }}">{{ config("staff-types.siteStaffParamNamesName") }} - Приоритет</a>--}}
-                </div>
-                {{--                @include("staff-types::admin.staff-param-names.includes.table-list", ["namesList" => $names])--}}
-            </div>
-        </div>
-    @endif
-
-
     @if ($types)
         <div class="col-12 mt-3">
             <div class="card">

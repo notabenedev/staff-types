@@ -4,7 +4,6 @@
 
 @section('header-title',  config("staff-types.siteStaffParamUnitName")." - {$unit->title}")
 
-
 @section('admin')
     @include("staff-types::admin.staff-param-units.includes.pills")
     <div class="col-12">

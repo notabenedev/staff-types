@@ -44,9 +44,8 @@ class StaffParamUnitActionsManager
      * Задать порядок.
      *
      * @param array $items
-     * @param int $parent
      */
-    protected function setItemsWeight(array $items, int $parent)
+    protected function setItemsWeight(array $items)
     {
         foreach ($items as $priority => $item) {
             $id = $item["id"];
@@ -90,10 +89,11 @@ class StaffParamUnitActionsManager
      * Admin breadcrumbs
      *
      * @param StaffParamUnit $unit
+     * @param bool $isNamePage
      * @return array
      *
      */
-    public function getAdminBreadcrumb(StaffParamUnit $unit)
+    public function getAdminBreadcrumb(StaffParamUnit $unit, $isNamePage = false)
     {
 
         $breadcrumb[] = (object) [
@@ -103,13 +103,23 @@ class StaffParamUnitActionsManager
             ];
 
         $routeParams = Route::current()->parameters();
+        $isNamePage = $isNamePage && ! empty($routeParams["name"]);
         $active = ! empty($routeParams["unit"]) &&
-            $routeParams["unit"]->id == $unit->id;
+            $routeParams["unit"]->id == $unit->id &&
+            ! $isNamePage;
         $breadcrumb[] = (object) [
             "title" => $unit->title,
             "url" => route("admin.staff-param-units.show", ["unit" => $unit]),
             "active" => $active,
         ];
+        if ($isNamePage) {
+            $name = $routeParams["name"];
+            $breadcrumb[] = (object) [
+                "title" => $name->title,
+                "url" => route("admin.staff-param-names.show", ["name" => $name]),
+                "active" => true,
+            ];
+        }
 
         return $breadcrumb;
     }

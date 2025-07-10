@@ -4,9 +4,9 @@
 
 @section('header-title')
     @empty($unit)
-        Параметры группы
+        {{  config("staff-types.siteStaffParamUnitName") }}
     @else
-        {{ $unit->title }}
+        {{  config("staff-types.siteStaffParamUnitName")  }} - {{ $unit->title }} - {{  config("staff-types.siteStaffParamNamesName")  }}
     @endempty
 @endsection
 

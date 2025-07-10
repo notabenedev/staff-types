@@ -90,13 +90,6 @@ class StaffParamUnitController extends Controller
      */
     public function show(StaffParamUnit $unit)
     {
-        $namesCount = isset($unit->names)? $unit->names->count(): null;
-        if ($namesCount) {
-            $names = $unit->names()->orderBy("priority")->get();
-        }
-        else {
-            $names = false;
-        }
 
         $typesCount = isset($unit->types)? $unit->types->count(): null;
         if ($typesCount) {
@@ -108,7 +101,6 @@ class StaffParamUnitController extends Controller
 
         return view("staff-types::admin.staff-param-units.show", [
             "unit" => $unit,
-            "names" => $names,
             "types" => $types,
         ] );
     }

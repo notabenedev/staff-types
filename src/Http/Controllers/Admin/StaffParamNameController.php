@@ -8,6 +8,7 @@ use App\StaffParamName;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Notabenedev\StaffTypes\Facades\StaffParamNameActions;
 
 class StaffParamNameController extends Controller
 {
@@ -216,5 +217,54 @@ class StaffParamNameController extends Controller
         $status = $name->expected_at ? 1 : null;
         if ($status !== $checkStatus)
             $name->expected();
+    }
+
+    /**
+     * Priority
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function priority(StaffParamUnit $unit){
+        $this->authorize("update", StaffParamUnit::class);
+        $collection =$unit->names()->orderBy("priority")->get();
+        $groups = [];
+        foreach ($collection as $item) {
+            $groups[] = [
+                "name" => $item->title,
+                "id" => $item->id,
+            ];
+        }
+        return view("staff-types::admin.staff-param-names.priority", [
+            'groups' => $groups,
+            'unit' => $unit,
+        ]);
+
+    }
+
+    /**
+     * Изменить приоритет
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function changeItemsPriority(Request $request)
+    {
+        $data = $request->get("items", false);
+        if ($data) {
+            $result = StaffParamNameActions::saveOrder($data);
+            if ($result) {
+                return response()
+                    ->json("Порядок сохранен");
+            }
+            else {
+                return response()
+                    ->json("Ошибка, что то пошло не так");
+            }
+        }
+        else {
+            return response()
+                ->json("Ошибка, недостаточно данных");
+        }
     }
 }
