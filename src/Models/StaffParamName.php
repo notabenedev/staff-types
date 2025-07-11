@@ -15,6 +15,7 @@ class StaffParamName extends Model
         "string" => "Строка",
         "int" => "Число",
         "bool" => "Логическое",
+        "date" => "Дата",
     ];
     protected $fillable = [
         "title",

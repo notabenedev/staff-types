@@ -3,7 +3,8 @@
     "description": "Add types to staff package",
     "type": "library",
     "require": {
-        "notabenedev/site-staff": "@dev"
+        "notabenedev/site-staff": "@dev",
+        "portedcheese/contact-page": "@dev",
     },
     "license": "MIT",
     "autoload": {

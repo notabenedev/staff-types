@@ -6,7 +6,8 @@ return [
     "siteStaffParamUnitsName" => "Группы параметров",
     "siteStaffParamUnitName" => "Группа параметров",
     "siteStaffParamNamesName" => "Имена параметров",
-    "siteEmployeeOfferName" => "Предложение специалиста",
+    "siteStaffEmployeeOfferName" => "Предложение специалиста",
+    "siteStaffEmployeeOffersName" => "Предложения специалиста",
 
     "siteCurrencyDefault" => "RUR",
 
@@ -15,6 +16,7 @@ return [
 
     "staffTypesAdminRoutes" => true,
 
+    "offerFacade" => \Notabenedev\StaffTypes\Helpers\StaffOfferActionsManager::class,
     "paramNameFacade" => \Notabenedev\StaffTypes\Helpers\StaffParamNameActionsManager::class,
     "paramUnitFacade" => \Notabenedev\StaffTypes\Helpers\StaffParamUnitActionsManager::class,
     "typeFacade" => \Notabenedev\StaffTypes\Helpers\StaffTypeActionsManager::class,

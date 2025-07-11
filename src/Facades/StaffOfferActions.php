@@ -2,21 +2,21 @@
 
 namespace Notabenedev\StaffTypes\Facades;
 
-use App\StaffType;
 use Illuminate\Support\Facades\Facade;
 
 
 /**
  *
- * Class StaffTypeActions
+ * Class StaffOfferActions
  * @package Notabenedev\StaffTypes\Facades
- * @method static array getAdminBreadcrumb(StaffType $type)
+ * @method static array getArray()
+ * @method static bool saveOrder(array $data)
 
  */
-class StaffTypeActions extends Facade
+class StaffOfferActions extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return "staff-type-actions";
+        return "staff-offer-actions";
     }
 }

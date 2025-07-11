@@ -2,6 +2,7 @@
 
 namespace Notabenedev\StaffTypes;
 
+use App\Contact;
 use App\StaffType;
 use Illuminate\Support\ServiceProvider;
 use Notabenedev\StaffTypes\Console\Commands\StaffTypesMakeCommand;
@@ -32,6 +33,10 @@ class StaffTypesServiceProvider extends ServiceProvider
             $class = config("staff-types.typeFacade");
             return new $class;
         });
+        $this->app->singleton("staff-offer-actions", function () {
+            $class = config("staff-types.offerFacade");
+            return new $class;
+        });
     }
 
     /**
@@ -60,11 +65,14 @@ class StaffTypesServiceProvider extends ServiceProvider
             $this->loadRoutesFrom(__DIR__."/routes/admin/staff-type.php");
             $this->loadRoutesFrom(__DIR__."/routes/admin/staff-param-unit.php");
             $this->loadRoutesFrom(__DIR__."/routes/admin/staff-param-name.php");
+            $this->loadRoutesFrom(__DIR__."/routes/admin/staff-offer.php");
         }
 
         // Подключение шаблонов.
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'staff-types');
 
+
+        // расширение шаблонов
         view()->composer([
             "staff-types::admin.staff-param-units.create",
             "staff-types::admin.staff-param-units.edit",
@@ -72,6 +80,14 @@ class StaffTypesServiceProvider extends ServiceProvider
         ], function ($view){
             $types = StaffType::all();
             $view->with("types", $types);
+        });
+
+        view()->composer([
+            "staff-types::admin.staff-offers.includes.contacts",
+
+        ], function ($view){
+            $contacts = Contact::getForPage();
+            $view->with("contacts", $contacts);
         });
 
     }

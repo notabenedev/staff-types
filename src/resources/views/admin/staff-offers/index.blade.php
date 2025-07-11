@@ -1,18 +1,18 @@
 @extends("admin.layout")
 
-@section("page-title", config("staff-types.siteStaffParamUnitsName")." - ")
+@section("page-title", config("staff-types.siteStaffOffersName")." - ")
 
 @section('header-title')
-    @empty($unit)
-        {{  config("staff-types.siteStaffParamUnitName") }}
+    @empty($employee)
+        {{  config("site-staff.siteEmployeeName") }}
     @else
-        {{  config("staff-types.siteStaffParamUnitName")  }} - {{ $unit->title }} - {{  config("staff-types.siteStaffParamNamesName")  }}
+        {{  config("site-staff.siteEmployeeName")  }} - {{ $employee->title }} - {{ config("staff-types.siteStaffEmployeeOffersName") }}
     @endempty
 @endsection
 
 @section('admin')
-    @isset($unit)
-        @include("staff-types::admin.staff-param-names.includes.pills")
+    @isset($employee)
+        @include("staff-types::admin.staff-offers.includes.pills")
     @endisset
     <div class="col-12">
         <div class="card">
@@ -27,15 +27,15 @@
                            value="{{ $request->get("title", "") }}"
                            class="form-control  mb-2 me-sm-2">
 
-                    <select class="custom-select mb-2 me-sm-2" name="expected" aria-label="Статус публикации">
-                        <option value="all"{{ ! $request->has('expected') || $request->get('expected') == 'all' ? " selected" : '' }}>
+                    <select class="custom-select mb-2 me-sm-2" name="published" aria-label="Статус публикации">
+                        <option value="all"{{ ! $request->has('published') || $request->get('published') == 'all' ? " selected" : '' }}>
                             Статус любой
                         </option>
-                        <option value="yes"{{ $request->get('expected') === 'yes' ? " selected" : '' }}>
-                            Обязательный
+                        <option value="yes"{{ $request->get('published') === 'yes' ? " selected" : '' }}>
+                            Опубликован
                         </option>
-                        <option value="no"{{ $request->get('expected') === 'no' ? " selected" : '' }}>
-                            Не обязательный
+                        <option value="no"{{ $request->get('published') === 'no' ? " selected" : '' }}>
+                            Не опубликован
                         </option>
                     </select>
 
@@ -51,40 +51,40 @@
                         <thead>
                         <tr>
                             <th>Заголовок</th>
-                            @empty($unit)
-                                <th>Группа параметров</th>
+                            @empty($employee)
+                                <th>{{ config("staff-types.siteSatffOffersName")  }}</th>
                             @endempty
-                            <th>Обязательный</th>
-                            @canany(["update", "view", "delete"], \App\StaffParamName::class)
+                            <th>Статус</th>
+                            @canany(["update", "view", "delete"], \App\SatffOffer::class)
                                 <th>Действия</th>
                             @endcanany
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach ($names as $item)
+                        @foreach ($offers as $item)
                             <tr>
                                 <td>{{ $item->title }}</td>
-                                @empty($unit)
+                                @empty($employee)
                                     <td>
-                                        <a href="{{ route("admin.staff-param-units.show", ["unit" => $item->unit]) }}" target="_blank">
-                                            {{ $item->unit->title }}
+                                        <a href="{{ route("admin.employees.show", ["employee" => $item->employee]) }}" target="_blank">
+                                            {{ $item->employee->title }}
                                         </a>
                                     </td>
                                 @endempty
                                 <td>
-                                    {{ !empty($item->expected_at)? "Обязательный": "-" }}
+                                    {{ !empty($item->published_at)? "Опубликован": "-" }}
                                 </td>
                                 @canany(["update", "view", "delete"], $item)
                                     <td>
                                         <div role="toolbar" class="btn-toolbar">
                                             <div class="btn-group mr-1">
                                                 @can("update", $item)
-                                                    <a href="{{ route("admin.staff-param-names.edit", ["name" => $item]) }}" class="btn btn-primary">
+                                                    <a href="{{ route("admin.staff-offers.edit", ["offer" => $item]) }}" class="btn btn-primary">
                                                         <i class="far fa-edit"></i>
                                                     </a>
                                                 @endcan
                                                 @can("view", $item)
-                                                    <a href="{{ route('admin.staff-param-names.show', ['name' => $item]) }}" class="btn btn-dark">
+                                                    <a href="{{ route('admin.staff-offers.show', ['offer' => $item]) }}" class="btn btn-dark">
                                                         <i class="far fa-eye"></i>
                                                     </a>
                                                 @endcan
@@ -99,7 +99,7 @@
                                         @can("delete", $item)
                                             <confirm-form :id="'{{ "delete-form-{$item->id}" }}'">
                                                 <template>
-                                                    <form action="{{ route('admin.staff-param-names.destroy', ['name' => $item]) }}"
+                                                    <form action="{{ route('admin.staff-offers.destroy', ['offer' => $item]) }}"
                                                           id="delete-form-{{ $item->id }}"
                                                           class="btn-group"
                                                           method="post">
@@ -119,11 +119,11 @@
             </div>
         </div>
     </div>
-    @if ($names->lastPage() > 1)
+    @if ($offers->lastPage() > 1)
         <div class="col-12 mt-3">
             <div class="card">
                 <div class="card-body">
-                    {{ $names->links() }}
+                    {{ $offers->links() }}
                 </div>
             </div>
         </div>
