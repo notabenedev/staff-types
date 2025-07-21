@@ -20,6 +20,13 @@ class StaffType extends Model
     protected static function booting() {
 
         parent::booting();
+        self::deleting(function(\App\StaffType $model){
+            $model->units()->sync([]);
+            foreach ($model->departments as $department){
+                $department->staff_type_id = null;
+                $department->save();
+            }
+        });
     }
 
     /**

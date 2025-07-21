@@ -42,6 +42,11 @@
                         @enderror
                     </div>
 
+                    <div class="my-3">
+                        <label>{{ config("site-staff.siteDepartmentName") }}:</label>
+                        @include("site-staff::admin.departments.includes.tree-checkbox")
+                    </div>
+
                     <div class="btn-group"
                          role="group">
                         <button type="submit" class="btn btn-success">Добавить</button>

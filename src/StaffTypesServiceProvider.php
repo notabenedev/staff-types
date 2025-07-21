@@ -37,6 +37,10 @@ class StaffTypesServiceProvider extends ServiceProvider
             $class = config("staff-types.offerFacade");
             return new $class;
         });
+        $this->app->singleton("staff-param-actions", function () {
+            $class = config("staff-types.paramFacade");
+            return new $class;
+        });
     }
 
     /**
@@ -63,10 +67,20 @@ class StaffTypesServiceProvider extends ServiceProvider
         // Подключаем роуты
         if (config("staff-types.staffTypesAdminRoutes")) {
             $this->loadRoutesFrom(__DIR__."/routes/admin/staff-type.php");
+        }
+        if (config("staff-types.staffParamUnitsAdminRoutes")) {
             $this->loadRoutesFrom(__DIR__."/routes/admin/staff-param-unit.php");
+        }
+        if (config("staff-types.staffParamNamesAdminRoutes")) {
             $this->loadRoutesFrom(__DIR__."/routes/admin/staff-param-name.php");
+        }
+        if (config("staff-types.staffOffersAdminRoutes")) {
             $this->loadRoutesFrom(__DIR__."/routes/admin/staff-offer.php");
         }
+        if (config("staff-types.staffParamsAjaxRoutes")) {
+            $this->loadRoutesFrom(__DIR__."/routes/ajax/staff-param.php");
+        }
+
 
         // Подключение шаблонов.
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'staff-types');
@@ -89,6 +103,12 @@ class StaffTypesServiceProvider extends ServiceProvider
             $contacts = Contact::getForPage();
             $view->with("contacts", $contacts);
         });
+
+        // Assets.
+        $this->publishes([
+            __DIR__ . '/resources/js/components' => resource_path('js/components/vendor/staff-types'),
+
+        ], 'public');
 
     }
 }

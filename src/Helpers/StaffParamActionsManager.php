@@ -1,0 +1,112 @@
+<?php
+
+namespace Notabenedev\StaffTypes\Helpers;
+
+use App\StaffEmployee;
+use App\StaffOffer;
+
+class StaffParamActionsManager
+{
+    public static  function getArray($model)
+    {
+        $modelName = "";
+        foreach (config('staff-types.staffParamModels') as $name => $class) {
+            if (get_class($model) == $class) {
+                $modelName = $name;
+                break;
+            }
+        }
+        $collection = $model->params->sortBy('id');
+        $array = [];
+        foreach ($collection as $item){
+            $array[$item->id]=[
+                'id' => $item->id,
+                'name' => $item->name,
+                'name_id' => $item->staff_param_name_id,
+                'value' => $item->value,
+                'set_id' => $item->setHuman,
+                'valueChanged' => $item->value,
+                'valueInput' => false,
+                "valueUrl" => route("admin.vue.staff-params.value", [
+                    "model" => $modelName,
+                    'id' => $item->paramable_id,
+                    'param' => $item->id,
+                ]),
+
+                'delete' => route('admin.vue.staff-params.delete', [
+                    'model' => $modelName,
+                    'id' => $item->paramable_id,
+                    'param' => $item->id,
+                ]),
+            ];
+        }
+
+        return $array;
+    }
+
+    /**
+     *
+     * @param StaffOffer|StaffEmployee $modelObject
+     * @return array
+     */
+    public static function prepareAvailableData($modelObject){
+        $modelClass = get_class($modelObject);
+        $unitClass = array_search($modelClass,config("staff-types.staffParamModels",[]));
+        if ($unitClass === "staff-offer" && isset($modelObject->employee))
+            $employee = $modelObject->employee;
+        else
+            $employee = $modelObject;
+
+        // типы
+
+        $departments = $employee->departments()->with('type')->get();
+        $availableTypes = [];
+        foreach ($departments as $department){
+            if (isset($department->type))
+                $availableTypes[$department->type->id] = $department->type->title;
+        }
+        $available = [];
+        foreach ($availableTypes as $id => $title){
+            $units = \App\StaffParamUnit::query()->join('staff_type_staff_param_unit','id','=','staff_param_unit_id','left', 'staff_param_type_id = '.$id)->get();
+
+            // группы внутри типа
+            foreach ($units as $unit){
+                $names  = $unit->names;
+                if ( $unit->class === $unitClass){
+                    $namesArray = [];
+                    $setsArray = [];
+                    $countSets = 0;
+
+                    // имена внутри типа
+                    foreach ($names as $name){
+                        $valuesArray = [];
+                        $setsValuesArray[$name->id] = [];
+                        $values = $modelObject->params()->where('staff_param_name_id','=', $name->id)->get();
+
+                        // значения и сеты имен
+                        foreach ($values as $value){
+                            $valuesArray[$value->staff_param_name_id][$value->setHuman] =  ["id"=>$value->id, "value"=> $value->value];
+                            $setsValuesArray[$value->staff_param_name_id][] = $value->setHuman;
+                        }
+
+                        $currentCountSets = count($setsValuesArray[$name->id]);
+                        if ($currentCountSets >= $countSets){
+                            $setsArray = $setsValuesArray[$name->id];
+                            $countSets = $currentCountSets;
+                        }
+
+                        // добавляем значения к элементу Имя
+                        $emptyValue[$name->id][0]= '';
+                        $valuesToMerge = isset($valuesArray[$name->id]) ? $valuesArray[$name->id]:$emptyValue;
+                        $el = $name->toArray() ;
+                        $el["values"] = $valuesToMerge;
+                        $namesArray[] = $el;
+                    }
+                    $available[$title][] = ["id" => $unit->id, "title" => $unit->title, "demonstrated" => $unit->demonstrated_at? 1:0, "names"=> $namesArray, 'sets' => $setsArray];
+                }
+
+            }
+        }
+        return $available;
+    }
+}

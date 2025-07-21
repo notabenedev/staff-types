@@ -48,6 +48,15 @@
                         </li>
                     @endcan
 
+                    @can("viewAny", \App\StaffParam::class)
+                            <li class="nav-item">
+                                <a href="{{ route("admin.staff-offers.params", ["offer" => $offer]) }}"
+                                   class="nav-link{{ strstr($currentRoute, "staff-offers.params") !== false ? " active" : "" }}">
+                                    {{  config("staff-types.siteStaffParamsName")  }}
+                                </a>
+                            </li>
+                    @endcan
+
                     @can("delete", $offer)
                         <li class="nav-item">
                             <button type="button" class="btn btn-link nav-link"

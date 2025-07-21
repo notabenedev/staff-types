@@ -51,6 +51,10 @@
                     </div>
 
                     <div class="my-3">
+                        @include("staff-types::admin.staff-param-units.includes.class", ["old" => old('class'), 'unit' => $unit])
+                    </div>
+
+                    <div class="my-3">
                         <hr>
                         <label>Название группы в файле выгрузки:</label>
                         <div class="custom-control custom-checkbox">

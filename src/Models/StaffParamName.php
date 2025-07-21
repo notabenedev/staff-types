@@ -12,8 +12,8 @@ class StaffParamName extends Model
     use ShouldSlug;
 
     const ALLOW_TYPES = [
-        "string" => "Строка",
-        "int" => "Число",
+        "text" => "Строка",
+        "number" => "Число",
         "bool" => "Логическое",
         "date" => "Дата",
     ];
@@ -29,7 +29,13 @@ class StaffParamName extends Model
     protected static function booting() {
 
         parent::booting();
+        self::deleting(function(\App\StaffParamName $model){
+            foreach ($model->params as $param){
+                $param->delete();
+            }
+        });
     }
+
 
     /**
      * Группа параметра
@@ -61,4 +67,12 @@ class StaffParamName extends Model
         $this->save();
     }
 
+    /**
+     * Значения
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function params(){
+        return $this->hasMany(\App\StaffParam::class,'staff_param_name_id');
+    }
 }

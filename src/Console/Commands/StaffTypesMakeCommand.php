@@ -19,6 +19,7 @@ class StaffTypesMakeCommand extends BaseConfigModelCommand
     {--models : Export models}
     {--controllers : Export controllers}
     {--policies : Export policies}
+    {--vue : Export vue}
     ';
 
 
@@ -47,13 +48,14 @@ class StaffTypesMakeCommand extends BaseConfigModelCommand
      * The models to  be exported
      * @var array
      */
-    protected $models = ["StaffType", "StaffOffer", "StaffParamUnit", "StaffParamName"];
+    protected $models = ["StaffType", "StaffOffer", "StaffParamUnit", "StaffParamName", "StaffParam"];
 
     /**
      * Make Controllers
      */
     protected $controllers = [
         "Admin" => ["StaffTypeController", "StaffParamUnitController", "StaffParamNameController", "StaffOfferController"],
+        "Ajax" => ["StaffParamController"]
     ];
 
     /**
@@ -82,8 +84,33 @@ class StaffTypesMakeCommand extends BaseConfigModelCommand
             "slug" => "staff-offers",
             "policy" => "StaffOfferPolicy",
         ],
+        [
+            "title" => "Параметры сотрудников и предложений",
+            "slug" => "staff-params",
+            "policy" => "StaffParamPolicy",
+        ],
 
     ];
+
+    /**
+     * Vue files folder
+     *
+     * @var string
+     */
+    protected $vueFolder = "staff-types";
+
+    /**
+     * Vue files list
+     *
+     * @var array
+     */
+    protected $vueIncludes = [
+        'admin' => [
+            'staff-params' => "ParamsComponent",
+        ],
+        'app' => [],
+    ];
+
     /**
      * Create a new command instance.
      *
@@ -108,9 +135,13 @@ class StaffTypesMakeCommand extends BaseConfigModelCommand
         }
         if ($this->option("controllers") || $all) {
             $this->exportControllers("Admin");
+            $this->exportControllers("Ajax");
         }
         if ($this->option("policies") || $all) {
             $this->makeRules();
+        }
+        if ($this->option("vue") || $all) {
+            $this->makeVueIncludes("admin");
         }
         return 0;
     }

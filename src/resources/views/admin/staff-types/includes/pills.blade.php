@@ -69,7 +69,7 @@
                                 <i class="fas fa-trash-alt text-danger"></i>
                             </button>
                             <confirm-form :id="'{{ "delete-form-type-{$type->id}" }}'">
-                                <template>
+                                <template v-if="true">
                                     <form action="{{ route('admin.staff-types.destroy', ['type' => $type]) }}"
                                           id="delete-form-type-{{ $type->id }}"
                                           class="btn-group"

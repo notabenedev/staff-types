@@ -6,7 +6,7 @@
 @endif
 @if (class_exists(\App\StaffParamUnit::class))
     <a href="{{ route('admin.staff-param-units.index') }}"
-       class="collapse-item{{strstr($currentRoute, 'admin.staff-param-units') !== FALSE ? ' active' : '' }}">
+       class="collapse-item{{strstr($currentRoute, 'admin.staff-param-units') !== FALSE || strstr($currentRoute, 'admin.staff-param-names') !== FALSE  ? ' active' : '' }}">
         <span>{{ config("staff-types.siteStaffParamUnitsName") }}</span>
     </a>
 @endif

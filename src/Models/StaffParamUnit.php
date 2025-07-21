@@ -14,6 +14,7 @@ class StaffParamUnit extends Model
     protected $fillable = [
         "title",
         "slug",
+        "class",
         "priority",
         "demonstrated_at",
     ];
@@ -21,6 +22,12 @@ class StaffParamUnit extends Model
     protected static function booting() {
 
         parent::booting();
+        self::deleting(function(\App\StaffParamUnit $model){
+            $model->types()->sync([]);
+            foreach ($model->names as $name){
+                $name->delete();
+            }
+        });
     }
 
     /**

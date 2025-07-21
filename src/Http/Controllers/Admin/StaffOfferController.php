@@ -324,4 +324,21 @@ class StaffOfferController extends Controller
                 ->json("Ошибка, недостаточно данных");
         }
     }
+
+    /**
+     * Страница параметров.
+     *
+     * @param StaffOffer $offer
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function params(StaffOffer $offer)
+    {
+        $this->authorize("update", $offer);
+        $employee = $offer->employee;
+        return view("staff-types::admin.staff-offers.params", [
+            'offer' => $offer,
+            'employee' => $employee,
+        ]);
+    }
 }

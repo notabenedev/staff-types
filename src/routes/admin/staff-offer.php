@@ -17,6 +17,8 @@ Route::group([
         Route::get("/{offer}/edit", [StaffOfferController::class, "edit"])->name("edit");
         Route::put("/{offer}", [StaffOfferController::class, "update"])->name("update");
         Route::delete("/{offer}", [StaffOfferController::class, "destroy"])->name("destroy");
+
+        Route::get('/{offer}/params', [StaffOfferController::class, 'params'])->name('params');
     });
 
     Route::group([
@@ -33,6 +35,7 @@ Route::group([
             ->name("priority");
         Route::put("/tree/item-priority", [StaffOfferController::class,"changeItemsPriority"])
             ->name("item-priority");
+
     });
 
 

@@ -5,6 +5,7 @@ namespace Notabenedev\StaffTypes\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\StaffParamUnit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Notabenedev\StaffTypes\Facades\StaffParamUnitActions;
 
@@ -76,9 +77,11 @@ class StaffParamUnitController extends Controller
         Validator::make($data, [
             "title" => ["required", "max:150"],
             "slug" => ["nullable", "max:150", "unique:staff_types,slug"],
+            "class" => ["required", "in:".implode(',',array_keys(config("staff-types.staffParamModels")))],
         ], [], [
             "title" => "Заголовок",
             "slug" => "Адресная строка",
+            "class" => "Класс"
         ])->validate();
     }
 
@@ -150,9 +153,12 @@ class StaffParamUnitController extends Controller
         Validator::make($data, [
             "title" => ["required", "max:150"],
             "slug" => ["nullable", "max:150", "unique:staff_param_units,slug,{$id}"],
+            "class" => ["required", "in:".implode(',',array_keys(config("staff-types.staffParamModels")))],
+
         ], [], [
             "title" => "Заголовок",
             "slug" => "Адресная строка",
+            "class" => "Класс"
         ])->validate();
     }
 

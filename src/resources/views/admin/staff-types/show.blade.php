@@ -26,9 +26,14 @@
             <div class="card">
                 <div class="card-header">
                     <h5>{{ config("staff-types.siteStaffParamUnitsName") }}</h5>
-{{--                    <a href="{{ route("admin.staff-types.units-tree", ["type" => $type]) }}">{{ config("staff-types.siteStaffParamUnitsName") }} - Приоритет</a>--}}
                 </div>
-{{--                @include("staff-types::admin.staff-units.includes.table-list", ["unitsList" => $units])--}}
+                <div class="card-body">
+                    <ul class="my-3">
+                        @foreach($units as $item)
+                            <li>{{ $item->title }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
         </div>
     @endif
@@ -39,7 +44,11 @@
                     <h5>{{ config("site-staff.siteDepartmentName") }}</h5>
                 </div>
                 <div class="card-body">
-                    @include("site-staff::departments.includes.table-list",["departments" => $departments])
+                    <ul class="my-3">
+                        @foreach($departments as $item)
+                            <li>{{ $item->title }}</li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
         </div>

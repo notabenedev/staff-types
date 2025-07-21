@@ -98,7 +98,7 @@
 
                                         @can("delete", $item)
                                             <confirm-form :id="'{{ "delete-form-{$item->id}" }}'">
-                                                <template>
+                                                <template v-if="true">
                                                     <form action="{{ route('admin.staff-offers.destroy', ['offer' => $item]) }}"
                                                           id="delete-form-{{ $item->id }}"
                                                           class="btn-group"

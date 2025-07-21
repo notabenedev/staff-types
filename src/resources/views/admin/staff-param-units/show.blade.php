@@ -16,6 +16,9 @@
                         <dt class="col-sm-3">Адрес</dt>
                         <dd class="col-sm-9">{{ $unit->slug }}</dd>
                     @endif
+                    <dt class="col-sm-3">Отображать группу для</dt>
+                    <dd class="col-sm-9">{{ config("staff-types.staffParamModels")["$unit->class"] }}</dd>
+
                     <dt class="col-sm-3">Название группы в файле выгрузки</dt>
                     <dd class="col-sm-9">{{ $unit->demonstrated_at? "Отобразить" : "Не отображать" }}</dd>
 

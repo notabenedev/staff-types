@@ -15,7 +15,7 @@ class CreateStaffParamsTable extends Migration
     {
         Schema::create('staff_params', function (Blueprint $table) {
             $table->id();
-            $table->nullableMorphs('staff_paramable');
+            $table->nullableMorphs('paramable');
             $table->unsignedBigInteger("staff_param_name_id");
             $table->string("value")->nullable();
             $table->timestamps();

@@ -4,6 +4,7 @@ namespace Notabenedev\StaffTypes\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Meta;
+use App\StaffDepartment;
 use App\StaffType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -59,6 +60,7 @@ class StaffTypeController extends Controller
     {
         $this->storeValidator($request->all());
         $item = StaffType::create($request->all());
+        $this->updateDepartments($request->all(), $item);
 
         return redirect()
             ->route("admin.staff-types.show", ["type" => $item])
@@ -138,6 +140,7 @@ class StaffTypeController extends Controller
     {
         $this->updateValidator($request->all(), $type);
         $type->update($request->all());
+        $this->updateDepartments($request->all(), $type);
 
         return redirect()
             ->route("admin.staff-types.show", ["type" => $type])
@@ -201,6 +204,27 @@ class StaffTypeController extends Controller
                 ->back()
                 ->with("success", "Успешно изменено");
 
+    }
+
+    /**
+     * Обновить отделы.
+     *
+     * @param $userInput
+     */
+    protected function updateDepartments($userInput, StaffType $type)
+    {
+        $departmentIds = [];
+        foreach ($userInput as $key => $value) {
+            if (strstr($key, "check-") == false) {
+                continue;
+            }
+            $departmentIds[] = $value;
+        }
+        $departments = StaffDepartment::query()->whereIn('id',  $departmentIds)->get();
+        foreach ($departments as $department){
+            $department->staff_type_id = $type->id;
+            $department->save();
+        }
     }
 
 }
