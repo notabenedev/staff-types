@@ -48,13 +48,15 @@
                         </li>
                     @endcan
 
-                    @can("viewAny", \App\StaffParam::class)
+                    @can("update", \App\StaffParam::class)
+                            @isset (config("staff-types.staffParamModels")["staff-offer"])
                             <li class="nav-item">
                                 <a href="{{ route("admin.staff-offers.params", ["offer" => $offer]) }}"
                                    class="nav-link{{ strstr($currentRoute, "staff-offers.params") !== false ? " active" : "" }}">
                                     {{  config("staff-types.siteStaffParamsName")  }}
                                 </a>
                             </li>
+                            @endisset
                     @endcan
 
                     @can("delete", $offer)

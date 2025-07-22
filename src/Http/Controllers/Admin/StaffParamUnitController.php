@@ -131,7 +131,24 @@ class StaffParamUnitController extends Controller
     public function update(Request $request, StaffParamUnit $unit)
     {
         $this->updateValidator($request->all(), $unit);
+
+        // проверка наличия параметров
+        if (! StaffParamUnitActions::canChangeClass($unit, $request->class))
+            return redirect()->back()
+                    ->withErrors(["class"=> "Нельзя изменить класс. Есть значения параметров для этого класса!"])->withInput();
+
+        $diff = StaffParamUnitActions::diffChangeTypes($unit, $request->all());
+        if ($diff !== true){
+            $checkErrors = ["types"=> "Нельзя изменить тип."];
+            foreach ($diff as $typeId){
+                $el = ["check-$typeId" => "Есть значения параметров для этого типа"];
+                $checkErrors = array_merge($checkErrors, $el);
+            }
+            return redirect()->back()
+                ->withErrors( $checkErrors)->withInput();
+        }
         $unit->updateTypes($request->all(), true);
+
         $this->demonstrate($unit, $request->get("demonstrated-btn"));
         $unit->update($request->all());
 

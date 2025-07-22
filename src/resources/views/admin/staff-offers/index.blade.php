@@ -54,6 +54,7 @@
                             @empty($employee)
                                 <th>{{ config("staff-types.siteSatffOffersName")  }}</th>
                             @endempty
+                            <th>Тип</th>
                             <th>Статус</th>
                             @canany(["update", "view", "delete"], \App\SatffOffer::class)
                                 <th>Действия</th>
@@ -64,6 +65,7 @@
                         @foreach ($offers as $item)
                             <tr>
                                 <td>{{ $item->title }}</td>
+                                <td>{{ $item->type? $item->type->title: "" }}</td>
                                 @empty($employee)
                                     <td>
                                         <a href="{{ route("admin.employees.show", ["employee" => $item->employee]) }}" target="_blank">

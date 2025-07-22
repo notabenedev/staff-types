@@ -46,12 +46,16 @@
                         @isset($types)
                             <label>{{ config("staff-types.siteStaffTypesName") }}:</label>
                             @include("staff-types::admin.staff-types.includes.tree-checkbox", ['types' => $types])
-
                         @endisset
                     </div>
 
                     <div class="my-3">
                         @include("staff-types::admin.staff-param-units.includes.class", ["old" => old('class'), 'unit' => $unit])
+                        @error("class")
+                        <div class="invalid-feedback" role="alert">
+                            {{ $message }}
+                        </div>
+                        @enderror
                     </div>
 
                     <div class="my-3">

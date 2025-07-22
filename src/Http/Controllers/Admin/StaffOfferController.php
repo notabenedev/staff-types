@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Notabenedev\StaffTypes\Facades\StaffOfferActions;
+use Notabenedev\StaffTypes\Models\StaffType;
 
 class StaffOfferController extends Controller
 {
@@ -90,6 +91,10 @@ class StaffOfferController extends Controller
         $offer->contact()->associate($contact);
         $offer->save();
 
+        $type= StaffType::find($request->get('staff_type_id'));
+        $offer->type()->associate($type);
+        $offer->save();
+
         $this->publish($offer, $request->get("published-btn"));
 
         return redirect()
@@ -114,6 +119,7 @@ class StaffOfferController extends Controller
             "experience" => ["required", "integer"],
             "city" => ["required", "max:100"],
             "contact_id" => ["required", "integer"],
+            "staff_type_id" => ["required", "integer"],
         ], [], [
             "title" => "Заголовок",
             "slug" => "Адресная строка",
@@ -125,6 +131,7 @@ class StaffOfferController extends Controller
             "experience" => "Лет опыта",
             "city" => "Город работы",
             "contact_id" => "Адрес работы",
+            "staff_type_id" => "Тип",
         ])->validate();
     }
 
@@ -205,6 +212,11 @@ class StaffOfferController extends Controller
         $contact= Contact::find($request->get('contact_id'));
         $offer->contact()->associate($contact);
         $offer->save();
+
+        $type= StaffType::find($request->get('staff_type_id'));
+        $offer->type()->associate($type);
+        $offer->save();
+
         return redirect()
             ->route("admin.staff-offers.show", ["offer" => $offer])
             ->with("success", "Параметр обновлен");
@@ -229,6 +241,7 @@ class StaffOfferController extends Controller
             "experience" => ["required", "integer"],
             "city" => ["required", "max:100"],
             "contact_id" => ["required", "integer"],
+            "staff_type_id" => ["required", "integer"],
         ], [], [
             "title" => "Заголовок",
             "slug" => "Адресная строка",
@@ -241,6 +254,7 @@ class StaffOfferController extends Controller
             "experience" => "Лет опыта",
             "city" => "Город работы",
             "contact_id" => "Адрес работы",
+            "staff_type_id" => "Тип",
 
         ])->validate();
     }

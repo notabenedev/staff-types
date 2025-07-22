@@ -47,6 +47,15 @@ class StaffOffer extends Model
     }
 
     /**
+     * Тип
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function type(){
+        return $this->belongsTo(\App\StaffType::class,'staff_type_id');
+    }
+
+    /**
      * Адрес Предложения
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

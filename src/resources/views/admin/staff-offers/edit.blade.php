@@ -13,6 +13,16 @@
                     @csrf
                     @method("put")
 
+                    <div class="my-3">
+                        <label for="sales_notes">Тип</label>
+                        @include('staff-types::admin.staff-offers.includes.types', ['offer' => $offer, 'old' => old('staff_type_id')])
+                        @error("staff_type_id")
+                        <div class="invalid-feedback" role="alert">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+
                     <div class="form-group">
                         <label for="title">Заголовок <span class="text-danger">*</span></label>
                         <input type="text"
@@ -171,7 +181,7 @@
                     </div>
 
                     <div class="my-3">
-                        <label>Адрес клиники</label>
+                        <label>Адрес предложения</label>
                         @include("staff-types::admin.staff-offers.includes.contacts",['offer' => $offer, 'old' => old('contact_id')])
                     </div>
 

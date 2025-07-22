@@ -6,10 +6,10 @@ return [
     "siteStaffParamUnitsName" => "Группы параметров",
     "siteStaffParamUnitName" => "Группа параметров",
     "siteStaffParamNamesName" => "Имена параметров",
-    "siteStaffParamsName" => "Параметры предложения",
-    "siteStaffParamName" => "Параметр предложения",
-    "siteStaffEmployeeOfferName" => "Предложение специалиста",
-    "siteStaffEmployeeOffersName" => "Предложения специалиста",
+    "siteStaffParamsName" => "Параметры",
+    "siteStaffParamName" => "Параметр",
+    "siteStaffEmployeeOfferName" => "Предложение ",
+    "siteStaffEmployeeOffersName" => "Предложения ",
 
     "siteCurrencyDefault" => "RUR",
 

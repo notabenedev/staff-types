@@ -4,6 +4,9 @@ namespace Notabenedev\StaffTypes\Helpers;
 
 use App\StaffEmployee;
 use App\StaffOffer;
+use App\StaffParamUnit;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class StaffParamActionsManager
 {
@@ -53,24 +56,29 @@ class StaffParamActionsManager
         $modelClass = get_class($modelObject);
         $unitClass = array_search($modelClass,config("staff-types.staffParamModels",[]));
         if ($unitClass === "staff-offer" && isset($modelObject->employee))
-            $employee = $modelObject->employee;
-        else
-            $employee = $modelObject;
-
-        // типы
-
-        $departments = $employee->departments()->with('type')->get();
-        $availableTypes = [];
-        foreach ($departments as $department){
-            if (isset($department->type))
-                $availableTypes[$department->type->id] = $department->type->title;
+        {
+            $availableTypes[$modelObject->type->id] = $modelObject->type;
         }
+        else
+        {
+            $employee = $modelObject;
+            $departments = $employee->departments()->with('type')->get();
+            $employeeTypes = [];
+            foreach ($departments as $department){
+                if (isset($department->type))
+                    $employeeTypes[$department->type->id] = $department->type;
+            }
+            $units = StaffParamUnit::query()->where("class",'=',$unitClass)->get();
+            $availableTypes = [];
+            $availableTypes[0]=(object) ['title' => $employee->title, 'units' => $units, 'allowedArray' => array_keys($employeeTypes)];
+        }
+        Log::info($availableTypes);
         $available = [];
-        foreach ($availableTypes as $id => $title){
-            $units = \App\StaffParamUnit::query()->join('staff_type_staff_param_unit','id','=','staff_param_unit_id','left', 'staff_param_type_id = '.$id)->get();
-
+        foreach ($availableTypes as $id => $type){
+            $units = $type->units;
             // группы внутри типа
             foreach ($units as $unit){
+                if (isset($type->alllowedArray) && ! in_array($unit->type->id, $type->alllowedArray)) continue;
                 $names  = $unit->names;
                 if ( $unit->class === $unitClass){
                     $namesArray = [];
@@ -102,7 +110,7 @@ class StaffParamActionsManager
                         $el["values"] = $valuesToMerge;
                         $namesArray[] = $el;
                     }
-                    $available[$title][] = ["id" => $unit->id, "title" => $unit->title, "demonstrated" => $unit->demonstrated_at? 1:0, "names"=> $namesArray, 'sets' => $setsArray];
+                    $available[$type->title][] = ["id" => $unit->id, "title" => $unit->title, "demonstrated" => $unit->demonstrated_at? 1:0, "names"=> $namesArray, 'sets' => $setsArray];
                 }
 
             }

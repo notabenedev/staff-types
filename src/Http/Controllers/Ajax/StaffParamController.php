@@ -173,9 +173,15 @@ class StaffParamController extends Controller
                 'message' => 'Param not found',
             ];
         }
-        $paramObject->value = $request->get('changed');
-        $paramObject->save();
-        event(new ParamUpdate($paramObject, "updated"));
+        if (empty($request->get('changed'))) {
+            $paramObject->delete();
+        }
+        else {
+            $paramObject->value = $request->get('changed');
+            $paramObject->save();
+            event(new ParamUpdate($paramObject, "updated"));
+        }
+
 
         return [
             'success' => TRUE,

@@ -90,6 +90,7 @@ class StaffTypesServiceProvider extends ServiceProvider
         view()->composer([
             "staff-types::admin.staff-param-units.create",
             "staff-types::admin.staff-param-units.edit",
+            "staff-types::admin.staff-offers.includes.types",
 
         ], function ($view){
             $types = StaffType::all();

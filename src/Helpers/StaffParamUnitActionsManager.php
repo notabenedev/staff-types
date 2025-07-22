@@ -2,9 +2,12 @@
 
 namespace Notabenedev\StaffTypes\Helpers;
 
+use App\StaffDepartment;
+use App\StaffEmployee;
 use App\StaffParamUnit;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 class StaffParamUnitActionsManager
@@ -156,5 +159,66 @@ class StaffParamUnitActionsManager
         foreach ($keys as $key){
             Cache::forget("$key");
         }
+    }
+
+    /**
+     * @param StaffParamUnit $unit
+     * @param $newClass
+     * @return bool
+     */
+
+    public function canChangeClass(StaffParamUnit $unit, $newClass)
+    {
+        $class = config("staff-types.staffParamModels")[$unit->getOriginal('class')];
+        if (class_exists($class) && $unit->getOriginal('class') !== $newClass) {
+            $value = $unit->names()->leftJoin('staff_params', 'staff_param_names.id', '=', 'staff_params.staff_param_name_id')
+                ->where('staff_params.paramable_type', '=', $class)->first();
+            if ($value)
+                return false;
+        }
+        return true;
+    }
+
+    /**
+     * @param StaffParamUnit $unit
+     * @param $userInput
+     * @return array|bool
+     *
+     */
+    public function diffChangeTypes(StaffParamUnit $unit, $userInput){
+        $typeIds = [];
+        foreach ($userInput as $key => $value) {
+            if (str_contains($key, "check-")) {
+                $typeIds[$key] = $value;
+            }
+        }
+
+        $types = $unit->types;
+        $typeCurrentIds = [];
+        foreach ($types as $type){
+            $typeCurrentIds['check-'.$type->id] = 1;
+        }
+
+        if (count($typeIds)<1)
+            $diff = $typeCurrentIds;
+        else
+            $diff = array_diff($typeCurrentIds, $typeIds);
+
+        if (!count($diff)) return true;
+
+        $departments = StaffDepartment::query()->select('id')->whereIn('staff_type_id', $diff)->get();
+        $employees = StaffEmployee::query()->join('staff_department_staff_employee','staff_employees.id','staff_department_staff_employee.staff_employee_id')->whereIn('staff_department_id',$departments->toArray())->get();
+
+        foreach ($employees as $employee){
+            if ($employee->params){
+                return $diff;
+            }
+            foreach ($employee->offers as $offer){
+                if ($offer->params){
+                    return $diff;
+                }
+            }
+        }
+        return true;
     }
 }

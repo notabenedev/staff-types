@@ -215,10 +215,15 @@ class StaffTypeController extends Controller
     {
         $departmentIds = [];
         foreach ($userInput as $key => $value) {
-            if (strstr($key, "check-") == false) {
+            if (str_contains($key, "check-") == false) {
                 continue;
             }
             $departmentIds[] = $value;
+        }
+        $current = $type->departments;
+        foreach ($current as $department){
+            $department->staff_type_id = null;
+            $department->save();
         }
         $departments = StaffDepartment::query()->whereIn('id',  $departmentIds)->get();
         foreach ($departments as $department){

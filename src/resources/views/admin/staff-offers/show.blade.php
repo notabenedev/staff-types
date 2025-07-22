@@ -10,6 +10,10 @@
         <div class="card">
             <div class="card-body">
                 <dl class="row">
+                    <dt class="col-sm-3">Тип</dt>
+                    <dd class="col-sm-9">
+                        {{ $offer->type ? $offer->type->title:""  }}
+                    </dd>
                     @if ($offer->price)
                         <dt class="col-sm-3">Стоимость</dt>
                         <dd class="col-sm-9">

@@ -22,15 +22,28 @@ class StaffType extends Model
         parent::booting();
         self::deleting(function(\App\StaffType $model){
             $model->units()->sync([]);
+            foreach ($model->offers as $offer){
+                $offer->delete();
+            }
+
             foreach ($model->departments as $department){
-                $department->staff_type_id = null;
+                $department->type()->dissociate();
                 $department->save();
             }
         });
     }
 
     /**
-     * Отделы (специализации)
+     * Предложения
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function offers(){
+        return $this->hasMany(\App\StaffOffer::class);
+    }
+
+    /**
+     * Отделы (специализации) для набора параметров
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -58,6 +71,16 @@ class StaffType extends Model
         $this->exported_at = $this->exported_at  ? null : now();
         $this->save();
     }
+    /**
+     * Есть ли отдел у сотрудника
+     *
+     * @param $id
+     * @return mixed
+     */
 
+    public function hasDepartment($id)
+    {
+        return $this->departments->where('id',$id)->count();
+    }
 
 }
