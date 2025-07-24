@@ -95,9 +95,7 @@ class StaffParam extends Model
      */
     public static function prepareParam($modelObject)
     {
-        //$collection = $modelObject->params->sortBy('id');
         return StaffParamActions::getArray($modelObject);
-        //return  \Notabenedev\StaffTypes\Http\Resources\StaffParam::collection($collection);
     }
 
 

@@ -68,11 +68,11 @@ class StaffParamActionsManager
                 if (isset($department->type))
                     $employeeTypes[$department->type->id] = $department->type;
             }
-            $units = StaffParamUnit::query()->where("class",'=',$unitClass)->get();
+            $units = StaffParamUnit::query()->where("class",'=',$unitClass)->orderBy('priority')->get();
             $availableTypes = [];
             $availableTypes[0]=(object) ['title' => $employee->title, 'units' => $units, 'allowedArray' => array_keys($employeeTypes)];
         }
-        Log::info($availableTypes);
+        //Log::info($availableTypes);
         $available = [];
         foreach ($availableTypes as $id => $type){
             $units = $type->units;
@@ -89,7 +89,7 @@ class StaffParamActionsManager
                     foreach ($names as $name){
                         $valuesArray = [];
                         $setsValuesArray[$name->id] = [];
-                        $values = $modelObject->params()->where('staff_param_name_id','=', $name->id)->get();
+                        $values = $modelObject->params()->where('staff_param_name_id','=', $name->id)->orderBy('set_id')->get();
 
                         // значения и сеты имен
                         foreach ($values as $value){

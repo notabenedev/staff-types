@@ -58,7 +58,7 @@ class StaffType extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function units(){
-        return $this->belongsToMany(\App\StaffParamUnit::class,"staff_type_staff_param_unit")
+        return $this->belongsToMany(\App\StaffParamUnit::class,"staff_type_staff_param_unit")->orderBy('priority')
             ->withTimestamps();;
     }
 

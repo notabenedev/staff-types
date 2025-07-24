@@ -37,7 +37,7 @@ class StaffParamUnit extends Model
      */
     public function names()
     {
-        return $this->hasMany(\App\StaffParamName::class);
+        return $this->hasMany(\App\StaffParamName::class)->orderBy('priority');
     }
 
     /**
