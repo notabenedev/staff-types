@@ -179,6 +179,11 @@
                         @include("staff-types::admin.staff-offers.includes.contacts")
                     </div>
 
+                    <div class="mb-3 mt-3">
+                        <label>{{ config("site-staff.siteDepartmentName") }}:</label>
+                        @include("staff-types::admin.staff-offers.includes.departments-checkbox",["departments" => $employee->departments])
+                    </div>
+
                     <div class="my-3">
                         <hr>
                         <label>Статус</label>

@@ -72,7 +72,7 @@ class StaffType extends Model
         $this->save();
     }
     /**
-     * Есть ли отдел у сотрудника
+     * Есть ли отдел
      *
      * @param $id
      * @return mixed

@@ -15,6 +15,7 @@ return [
 
     "typeUrlName" => "staff-types",
     "paramUnitUrlName" => "staff-param-units",
+
     /*
    |-------------------------------------
    | Доступные модели
@@ -39,6 +40,7 @@ return [
     "staffParamNamesAdminRoutes" => true,
     "staffOffersAdminRoutes" => true,
     "staffParamsAjaxRoutes" => true,
+    "staffYmlSiteRoutes" => true,
 
     "paramFacade" => \Notabenedev\StaffTypes\Helpers\StaffParamActionsManager::class,
     "offerFacade" => \Notabenedev\StaffTypes\Helpers\StaffOfferActionsManager::class,
@@ -46,4 +48,9 @@ return [
     "paramUnitFacade" => \Notabenedev\StaffTypes\Helpers\StaffParamUnitActionsManager::class,
     "typeFacade" => \Notabenedev\StaffTypes\Helpers\StaffTypeActionsManager::class,
 
+    "cacheLifetime" => 0,
+    "cacheKey" => "staff-export-yml",
+    "ymlUrlName" => "staff-export",
+    "departmentFilterField" => "published_at",
+    "stripTags" => true,
 ];

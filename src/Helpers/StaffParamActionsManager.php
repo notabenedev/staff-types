@@ -72,7 +72,6 @@ class StaffParamActionsManager
             $availableTypes = [];
             $availableTypes[0]=(object) ['title' => $employee->title, 'units' => $units, 'allowedArray' => array_keys($employeeTypes)];
         }
-        //Log::info($availableTypes);
         $available = [];
         foreach ($availableTypes as $id => $type){
             $units = $type->units;

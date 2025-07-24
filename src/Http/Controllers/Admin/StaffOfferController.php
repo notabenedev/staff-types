@@ -96,7 +96,7 @@ class StaffOfferController extends Controller
         $offer->save();
 
         $this->publish($offer, $request->get("published-btn"));
-
+        $this->updateDepartments($request->all(), $offer);
         return redirect()
             ->route("admin.staff-offers.show", ["offer" => $offer])
             ->with("success", "Добавлено");
@@ -216,6 +216,7 @@ class StaffOfferController extends Controller
         $type= StaffType::find($request->get('staff_type_id'));
         $offer->type()->associate($type);
         $offer->save();
+        $this->updateDepartments($request->all(), $offer);
 
         return redirect()
             ->route("admin.staff-offers.show", ["offer" => $offer])
@@ -354,5 +355,22 @@ class StaffOfferController extends Controller
             'offer' => $offer,
             'employee' => $employee,
         ]);
+    }
+
+    /**
+     * Обновить отделы.
+     *
+     * @param $userInput
+     */
+    protected function updateDepartments($userInput, StaffOffer $offer)
+    {
+        $departmentIds = [];
+        foreach ($userInput as $key => $value) {
+            if (str_contains($key, "check-") == false) {
+                continue;
+            }
+            $departmentIds[] = $value;
+        }
+        $offer->departments()->sync($departmentIds);
     }
 }

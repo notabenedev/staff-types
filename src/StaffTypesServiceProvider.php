@@ -80,6 +80,9 @@ class StaffTypesServiceProvider extends ServiceProvider
         if (config("staff-types.staffParamsAjaxRoutes")) {
             $this->loadRoutesFrom(__DIR__."/routes/ajax/staff-param.php");
         }
+        if (config("staff-types.staffYmlSiteRoutes")) {
+            $this->loadRoutesFrom(__DIR__."/routes/site/staff-yml.php");
+        }
 
 
         // Подключение шаблонов.

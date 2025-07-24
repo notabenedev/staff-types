@@ -3,6 +3,7 @@
         <dl class="row">
             <dt class="col-12"><h2 class="text-secondary">{{ $offer->title }}</h2></dt>
             <dt class="col-12"><h3>{{ $offer->address }}</h3></dt>
+            <dt class="col-12">@include("site-staff::site.departments.includes.pills",["pills" => $offer->departments])</dt>
             @if ($offer->price)
                 <dd class="col-sm-5">{{ empty($offer->sales_notes)? "Стоимссть":  $offer->sales_notes }}</dd>
                 <dt class="col-sm-7">

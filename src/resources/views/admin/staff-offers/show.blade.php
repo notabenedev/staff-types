@@ -14,6 +14,14 @@
                     <dd class="col-sm-9">
                         {{ $offer->type ? $offer->type->title:""  }}
                     </dd>
+                    <dt class="col-sm-3">Отделы</dt>
+                    <dd class="col-sm-9">
+                        <ul>
+                            @foreach($offer->departments as $item)
+                                <li>{{ $item->title}}</li>
+                            @endforeach
+                        </ul>
+                    </dd>
                     @if ($offer->price)
                         <dt class="col-sm-3">Стоимость</dt>
                         <dd class="col-sm-9">

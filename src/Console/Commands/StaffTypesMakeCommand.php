@@ -55,7 +55,8 @@ class StaffTypesMakeCommand extends BaseConfigModelCommand
      */
     protected $controllers = [
         "Admin" => ["StaffTypeController", "StaffParamUnitController", "StaffParamNameController", "StaffOfferController"],
-        "Ajax" => ["StaffParamController"]
+        "Ajax" => ["StaffParamController"],
+        "Site" => ["StaffYmlController"]
     ];
 
     /**
@@ -136,6 +137,7 @@ class StaffTypesMakeCommand extends BaseConfigModelCommand
         if ($this->option("controllers") || $all) {
             $this->exportControllers("Admin");
             $this->exportControllers("Ajax");
+            $this->exportControllers("Site");
         }
         if ($this->option("policies") || $all) {
             $this->makeRules();

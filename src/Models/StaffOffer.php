@@ -47,6 +47,14 @@ class StaffOffer extends Model
     }
 
     /**
+     * Специализации предложения
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function departments(){
+        return $this->belongsToMany(\App\StaffDepartment::class)->withTimestamps();
+    }
+    /**
      * Тип
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -103,5 +111,15 @@ class StaffOffer extends Model
         return empty($this->contact->address) ? $this->contact->title : $this->contact->address;
     }
 
+    /**
+     * Есть ли отдел
+     *
+     * @param $id
+     * @return mixed
+     */
 
+    public function hasDepartment($id)
+    {
+        return $this->departments->where('id',$id)->count();
+    }
 }
