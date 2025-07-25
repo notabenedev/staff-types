@@ -4,6 +4,7 @@ namespace Notabenedev\StaffTypes\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Notabenedev\StaffTypes\Helpers\StaffParamActionsManager;
 use Notabenedev\StaffTypes\Traits\ShouldParams;
 use PortedCheese\BaseSettings\Traits\ShouldSlug;
 
@@ -39,12 +40,20 @@ class StaffOffer extends Model
     protected static function booting() {
 
         parent::booting();
+
         self::deleting(function(\App\StaffOffer $model){
             foreach ($model->params as $param){
                 $param->delete();
             }
         });
+        self::deleted(function(\App\StaffOffer $model){
+            StaffParamActionsManager::availableClearCache($model);
+        });
+        self::updated(function(\App\StaffOffer $model){
+            StaffParamActionsManager::availableClearCache($model);
+        });
     }
+
 
     /**
      * Специализации предложения

@@ -14,7 +14,6 @@ use Notabenedev\StaffTypes\Helpers\StaffParamUnitActionsManager;
  * Class StaffParamUnitActions
  * @package Notabenedev\StaffTypes\Facades
  * @method static array getArray()
- * @method static bool saveOrder(array $data)
  * @method static  bool canChangeClass(StaffParamUnit $unit, $newClass)
  * @method static  array|bool diffChangeTypes(StaffParamUnit $unit, $userInput)
  * @method static array getAdminBreadcrumb(StaffParamUnit $unit)

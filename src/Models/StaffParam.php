@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Notabenedev\StaffTypes\Facades\StaffParamActions;
+use Notabenedev\StaffTypes\Helpers\StaffParamActionsManager;
 
 class StaffParam extends Model
 {
@@ -19,7 +20,10 @@ class StaffParam extends Model
     protected static function booting() {
 
         parent::booting();
+
     }
+
+
 
     /**
      * @return mixed
@@ -51,7 +55,7 @@ class StaffParam extends Model
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
 
-    public function staffParamable() {
+    public function paramable() {
         return $this->morphTo();
     }
 

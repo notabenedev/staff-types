@@ -14,7 +14,6 @@ use Notabenedev\StaffTypes\Helpers\StaffParamUnitActionsManager;
  * Class StaffParamNameActions
  * @package Notabenedev\StaffTypes\Facades
  * @method static array getArray()
- * @method static bool saveOrder(array $data)
 
  */
 class StaffParamNameActions extends Facade

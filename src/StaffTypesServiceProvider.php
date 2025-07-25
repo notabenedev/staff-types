@@ -6,6 +6,8 @@ use App\Contact;
 use App\StaffType;
 use Illuminate\Support\ServiceProvider;
 use Notabenedev\StaffTypes\Console\Commands\StaffTypesMakeCommand;
+use Notabenedev\StaffTypes\Listeners\AvailableParamsClearCache;
+use PortedCheese\BaseSettings\Events\PriorityUpdate;
 
 class StaffTypesServiceProvider extends ServiceProvider
 {
@@ -114,5 +116,6 @@ class StaffTypesServiceProvider extends ServiceProvider
 
         ], 'public');
 
+        $this->app["events"]->listen(PriorityUpdate::class, AvailableParamsClearCache::class);
     }
 }

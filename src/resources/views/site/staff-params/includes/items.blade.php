@@ -3,7 +3,7 @@
         @foreach($units as $unit)
             @if ($unit['demonstrated'] && count($unit['names']))
                 <dd class="col-12 text-secondary">
-                    <h4>{{ $unit['title'] }}</h4>
+                    <h2>{{ $unit['title'] }}</h2>
                 </dd>
             @endif
             @foreach($unit['sets'] as $setId)

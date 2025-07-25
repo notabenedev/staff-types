@@ -7,6 +7,7 @@ use App\StaffParamUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Notabenedev\StaffTypes\Facades\StaffParamActions;
 use Notabenedev\StaffTypes\Facades\StaffParamUnitActions;
 
 class StaffParamUnitController extends Controller
@@ -232,29 +233,5 @@ class StaffParamUnitController extends Controller
 
     }
 
-    /**
-     * Изменить приоритет
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function changeItemsPriority(Request $request)
-    {
-        $data = $request->get("items", false);
-        if ($data) {
-            $result = StaffParamUnitActions::saveOrder($data);
-            if ($result) {
-                return response()
-                    ->json("Порядок сохранен");
-            }
-            else {
-                return response()
-                    ->json("Ошибка, что то пошло не так");
-            }
-        }
-        else {
-            return response()
-                ->json("Ошибка, недостаточно данных");
-        }
-    }
+
 }

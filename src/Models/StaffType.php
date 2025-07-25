@@ -4,6 +4,7 @@ namespace Notabenedev\StaffTypes\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Notabenedev\StaffTypes\Helpers\StaffParamActionsManager;
 use PortedCheese\BaseSettings\Traits\ShouldSlug;
 
 class StaffType extends Model
@@ -31,6 +32,26 @@ class StaffType extends Model
                 $department->save();
             }
         });
+
+        self::created(function(\App\StaffType $model){
+            $model->paramsClearCache();
+        });
+        self::deleted(function(\App\StaffType $model){
+            $model->paramsClearCache();
+        });
+        self::updated(function(\App\StaffType $model){
+            $model->paramsClearCache();
+        });
+    }
+    protected  function paramsClearCache(){
+        foreach ($this->offers as $offer){
+            StaffParamActionsManager::availableClearCache($offer);
+        }
+        foreach ($this->departments as $department){
+            foreach ($department->employee as $employee) {
+                StaffParamActionsManager::availableClearCache($employee);
+            }
+        }
     }
 
     /**

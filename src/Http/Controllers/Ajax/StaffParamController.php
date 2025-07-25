@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Notabenedev\StaffTypes\Events\ParamUpdate;
 use Notabenedev\StaffTypes\Facades\StaffParamActions;
+use Notabenedev\StaffTypes\Helpers\StaffParamActionsManager;
 use Notabenedev\StaffTypes\Http\Requests\StaffParamPostRequest;
 
 class StaffParamController extends Controller
@@ -89,6 +90,7 @@ class StaffParamController extends Controller
             ]);
             $modelClass->params()->save($param);
             event(new ParamUpdate($param, "created"));
+            StaffParamActionsManager::availableClearCache($modelClass);
             return [
                 'success' => TRUE,
                 'param' => $param->toArray(),
@@ -125,6 +127,7 @@ class StaffParamController extends Controller
                 ];
             }
             $paramObject->delete();
+            StaffParamActionsManager::availableClearCache($modelClass);
             return [
                 'success' => TRUE,
                 'params' => StaffParam::prepareParam($modelClass),
@@ -180,8 +183,9 @@ class StaffParamController extends Controller
             $paramObject->value = $request->get('changed');
             $paramObject->save();
             event(new ParamUpdate($paramObject, "updated"));
-        }
 
+        }
+        StaffParamActionsManager::availableClearCache($modelClass);
 
         return [
             'success' => TRUE,

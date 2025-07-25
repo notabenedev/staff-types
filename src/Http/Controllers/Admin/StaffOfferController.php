@@ -314,31 +314,6 @@ class StaffOfferController extends Controller
 
     }
 
-    /**
-     * Изменить приоритет
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function changeItemsPriority(Request $request)
-    {
-        $data = $request->get("items", false);
-        if ($data) {
-            $result = StaffOfferActions::saveOrder($data);
-            if ($result) {
-                return response()
-                    ->json("Порядок сохранен");
-            }
-            else {
-                return response()
-                    ->json("Ошибка, что то пошло не так");
-            }
-        }
-        else {
-            return response()
-                ->json("Ошибка, недостаточно данных");
-        }
-    }
 
     /**
      * Страница параметров.

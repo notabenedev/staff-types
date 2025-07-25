@@ -25,41 +25,6 @@ class StaffParamUnitActionsManager
         return $array;
     }
 
-    /**
-     * Сохранить порядок.
-     *
-     * @param array $data
-     * @return bool
-     */
-    public function saveOrder(array $data)
-    {
-        try {
-            $this->setItemsWeight($data, 0);
-        }
-        catch (\Exception $exception) {
-            return false;
-        }
-        return true;
-    }
-
-
-    /**
-     * Задать порядок.
-     *
-     * @param array $items
-     */
-    protected function setItemsWeight(array $items)
-    {
-        foreach ($items as $priority => $item) {
-            $id = $item["id"];
-            // Обновление
-            $unit = StaffParamUnit::query()
-                ->where("id", $id)
-                ->first();
-            $unit->priority = $priority;
-            $unit->save();
-        }
-    }
 
 
     /**
@@ -82,7 +47,7 @@ class StaffParamUnitActionsManager
                 "priority" => $item->priority,
                 "id" => $item->id,
                 "url" => route("admin.staff-param-units.show", ['unit' => $item->slug]),
-                "siteUrl" => route("site.staff-param-units.show", ["unit" => $item->slug]),
+                "siteUrl" => "",
             ];
         }
         return $array;

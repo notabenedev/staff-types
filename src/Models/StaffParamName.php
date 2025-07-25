@@ -4,6 +4,7 @@ namespace Notabenedev\StaffTypes\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Notabenedev\StaffTypes\Helpers\StaffParamActionsManager;
 use PortedCheese\BaseSettings\Traits\ShouldSlug;
 
 class StaffParamName extends Model
@@ -33,6 +34,15 @@ class StaffParamName extends Model
             foreach ($model->params as $param){
                 $param->delete();
             }
+        });
+        self::created(function(){
+            StaffParamActionsManager::availableClearCacheAll();
+        });
+        self::updated(function(){
+            StaffParamActionsManager::availableClearCacheAll();
+        });
+        self::deleted(function(){
+            StaffParamActionsManager::availableClearCacheAll();
         });
     }
 

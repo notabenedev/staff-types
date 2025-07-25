@@ -20,43 +20,6 @@ class StaffParamNameActionsManager
         return $array;
     }
 
-    /**
-     * Сохранить порядок.
-     *
-     * @param array $data
-     * @return bool
-     */
-    public function saveOrder(array $data)
-    {
-        try {
-            $this->setItemsWeight($data, 0);
-        }
-        catch (\Exception $exception) {
-            return false;
-        }
-        return true;
-    }
-
-
-    /**
-     * Задать порядок.
-     *
-     * @param array $items
-     *
-     */
-    protected function setItemsWeight(array $items)
-    {
-        foreach ($items as $priority => $item) {
-            $id = $item["id"];
-            // Обновление
-            $name = StaffParamName::query()
-                ->where("id", $id)
-                ->first();
-            $name->priority = $priority;
-            $name->save();
-        }
-    }
-
 
     /**
      * Получить данные в массив
