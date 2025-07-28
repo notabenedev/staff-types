@@ -4,7 +4,7 @@
     "type": "library",
     "require": {
         "notabenedev/site-staff": "^v2.1",
-        "portedcheese/contact-page": "^v2.0",
+        "portedcheese/contact-page": "^v2.0"
     },
     "license": "MIT",
     "autoload": {
