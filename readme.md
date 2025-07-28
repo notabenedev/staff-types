@@ -17,7 +17,7 @@ Vue2
     php artisan vendor:publish --provider="Notabenedev\StaffTypes\StaffTypesServiceProvider" --tag=public --force
     php artisan migrate
    
-    
+    php artisan make:staff-types
                             {--all : Run all}
                             {--models : Export models}
                             {--policies : Export and fill policies}

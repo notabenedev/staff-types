@@ -44,12 +44,15 @@ class StaffType extends Model
         });
     }
     protected  function paramsClearCache(){
+        if ($this->offers)
         foreach ($this->offers as $offer){
             StaffParamActionsManager::availableClearCache($offer);
         }
-        foreach ($this->departments as $department){
-            foreach ($department->employee as $employee) {
-                StaffParamActionsManager::availableClearCache($employee);
+        if ($this->departments)
+            foreach ($this->departments as $department){
+                if ($department->employees)
+                    foreach ($department->employees as $employee) {
+                        StaffParamActionsManager::availableClearCache($employee);
             }
         }
     }

@@ -13,6 +13,8 @@ class StaffYmlController extends Controller
 
     public function show(StaffType $type)
     {
+        if (! $type->exported_at)
+            return redirect(route("site.departments.index"), 301);
         $key =  config('staff-types.cacheKey:'.$type->slug, "staff-export-yml");
         $yml = Cache::remember( $key, config('staff-types.cacheLifetime', 0), function () use ($type) {
             $file = new \SimpleXMLElement("<?xml version='1.0' encoding='UTF-8' ?><yml_catalog></yml_catalog>");
@@ -102,6 +104,7 @@ class StaffYmlController extends Controller
     }
 
     protected function addParams($params, $yml){
+        if ($params)
         foreach ($params as $param){
             $paramYML = $yml->addChild("param", "$param->value");
             $name = $param->name->name;
