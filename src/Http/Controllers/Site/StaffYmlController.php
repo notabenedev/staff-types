@@ -23,7 +23,7 @@ class StaffYmlController extends Controller
             $shop->addChild("name",  config("staff-types.ymlName","") );
             $shop->addChild("company",  config("staff-types.ymlCompany",""));
             $shop->addChild("url", route("home") );
-            $shop->addChild("picture",  config("staff-types.ymlPicture","") );
+            $shop->addChild("picture",  asset(config("staff-types.ymlPicture","favicon.png")) );
             $currencies = $shop->addChild("currencies");
             $currency = $currencies->addChild("currency");
             $currency->addAttribute("id",config("staff-types.siteCurrencyDefault"));
