@@ -20,9 +20,10 @@ class StaffYmlController extends Controller
             $file = new \SimpleXMLElement("<?xml version='1.0' encoding='UTF-8' ?><yml_catalog></yml_catalog>");
             $file->addAttribute('date', date('Y-m-d h:i'));
             $shop = $file->addChild("shop");
-            $shop->addChild("name",  env("APP_NAME") );
-            $shop->addChild("company",  env("APP_NAME") );
-            $shop->addChild("url",  env("APP_URL") );
+            $shop->addChild("name",  config("staff-types.ymlName","") );
+            $shop->addChild("company",  config("staff-types.ymlCompany",""));
+            $shop->addChild("url", route("home") );
+            $shop->addChild("picture",  config("staff-types.ymlPicture","") );
             $currencies = $shop->addChild("currencies");
             $currency = $currencies->addChild("currency");
             $currency->addAttribute("id",config("staff-types.siteCurrencyDefault"));

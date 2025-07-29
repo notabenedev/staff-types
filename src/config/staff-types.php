@@ -48,9 +48,13 @@ return [
     "paramUnitFacade" => \Notabenedev\StaffTypes\Helpers\StaffParamUnitActionsManager::class,
     "typeFacade" => \Notabenedev\StaffTypes\Helpers\StaffTypeActionsManager::class,
 
-    "cacheLifetime" => 0,
+
+    "cacheLifetime" => 86400,
     "cacheKey" => "staff-export-yml",
     "ymlUrlName" => "staff-export",
+    "ymlName" => "",
+    "ymlCompany" => "",
+    "ymlPicture" => "",
     "departmentFilterField" => "published_at",
     "stripTags" => true,
 ];
