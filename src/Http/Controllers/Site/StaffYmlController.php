@@ -49,7 +49,7 @@ class StaffYmlController extends Controller
 
             $offersYml = $shop->addChild("offers");
             $employees = StaffEmployee::query();
-            $employees->chunk(100, function ($employees) use ($offersYml) {
+            $employees->chunk(100, function ($employees) use ($offersYml, $type) {
                 $imageRoute =  class_exists(\App\ImageFilter::class) ? 'image-filter' : 'imagecache';
                 foreach ($employees as $employee) {
                     if ($employee->published_at){
@@ -69,6 +69,8 @@ class StaffYmlController extends Controller
                                 $offerYml = $offersYml->addChild("offer");
                                 $offerYml->addAttribute("id", $offer->slug);
                                 $offerYml->addAttribute("group_id", $employee->id);
+
+                                $offerYml->addChild("categoryId", $type->id);
 
                                 $offerYml->addChild("name", htmlspecialchars($offer->title));
                                 $offerYml->addChild("url", route("site.employees.show", ["employee" => $employee]).'#'.$offer->slug);
