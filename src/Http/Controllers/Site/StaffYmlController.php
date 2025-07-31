@@ -101,7 +101,11 @@ class StaffYmlController extends Controller
                                 $cityYml->addAttribute('name', "Город");
 
                                 $this->addParams($employee->params, $offerYml);
+
+                                $clinicYml = $offerYml->addChild("param", "$offer->address");
+                                $clinicYml->addAttribute('name', "Адрес клиники");
                                 $this->addParams($offer->params, $offerYml);
+
                             }
                         }
                     }
