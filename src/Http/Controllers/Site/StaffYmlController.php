@@ -94,11 +94,11 @@ class StaffYmlController extends Controller
                                 if ($imageSrc)
                                     $offerYml->addChild("picture", "$imageSrc");
 
-                                $offerYml->addChild("param", "$offer->experience");
-                                $offerYml->addAttribute('name', "Годы опыта");
+                                $experienceYml = $offerYml->addChild("param", "$offer->experience");
+                                $experienceYml->addAttribute('name', "Годы опыта");
 
-                                $offerYml->addChild("param", "$offer->city");
-                                $offerYml->addAttribute('name', "Город");
+                                $cityYml = $offerYml->addChild("param", "$offer->city");
+                                $cityYml->addAttribute('name', "Город");
 
                                 $this->addParams($employee->params, $offerYml);
                                 $this->addParams($offer->params, $offerYml);
