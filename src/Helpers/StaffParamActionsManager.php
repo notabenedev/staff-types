@@ -127,7 +127,7 @@ class StaffParamActionsManager
     public static function availableClearCache($modelObject){
 
         $modelClass = get_class($modelObject);
-        Log::info($modelClass);
+        // Log::info($modelClass);
         Cache::forget('staff-param-available-data'.$modelClass.':'.$modelObject->id);
     }
 
@@ -135,7 +135,7 @@ class StaffParamActionsManager
      * @return void
      */
     public static function availableClearCacheAll(){
-        Log::info('all');
+        // Log::info('all');
         $employees = StaffEmployee::all();
         foreach ($employees as $employee)
         {

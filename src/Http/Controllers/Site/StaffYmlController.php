@@ -72,7 +72,7 @@ class StaffYmlController extends Controller
 
                                 $offerYml->addChild("categoryId", $type->id);
 
-                                $offerYml->addChild("name", htmlspecialchars($offer->title));
+                                $offerYml->addChild("name", htmlspecialchars(trim($employee->title)));
                                 $offerYml->addChild("url", route("site.employees.show", ["employee" => $employee]).'#'.$offer->slug);
 
                                 $priceYML = $offerYml->addChild("price", $offer->price);
