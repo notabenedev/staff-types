@@ -1,14 +1,17 @@
 <template>
   <div class="row">
     <div class="col-12">
+      <div class="d-none">
+        {{ available}}
+      </div>
       <div class="card" v-for="(units, typeIndex, tI) in available " :key="typeIndex">
         <form method="post">
           <div class="card-header">
             <h2>{{ typeIndex }}</h2>
           </div>
           <div class="card-body">
-            <div class="my-3" v-for="(unit, unitIndex) in units" :key="unitIndex">
-              <template v-if="unit['names'].length">
+            <div class="my-3" v-for="(unit, unitIndex) in units"  :key="unitIndex">
+              <template  v-if="unit['names'].length">
                 <p><b>{{ unit.title }}:</b></p>
                 <template v-if="! unit['demonstrated']">
                   <div class="d-flex flex-wrap">
@@ -43,14 +46,15 @@
                   <hr>
                 </template>
 
-                <div v-else-if="inputSets[typeIndex][unit['id']]" >
-                  <div v-for="(i, setIndex) in inputSets[typeIndex][unit['id']]"
-                       :key="setIndex"
-                       :value="inputSets[typeIndex][unit['id']][setIndex]"
-                       @change="inputSets[typeIndex][unit['id']][setIndex] = $event.target.value">
-                    <!--                                v-model="inputSets[typeIndex][unit['id']][setIndex]">-->
+                <template v-else-if="inputSets[typeIndex][unit['id']]">
+                  <div class="d-none">
+                    {{ inputSets[typeIndex][unit['id']] }}
+                  </div>
+                  <div v-for="(i, setIndex) in inputSets[typeIndex][unit['id']]" :key="setIndex"
+                       :value="inputSets[typeIndex][unit['id']][setIndex]" @change="inputSets[typeIndex][unit['id']][setIndex] = $event.target.value">
+                    <!--                                    v-model="inputSets[typeIndex][unit['id']][setIndex]">-->
                     <div class="d-flex flex-wrap">
-                      <div class="form-control w-auto me-2 mb-2" v-for="(name, nameIndex) of unit.names" :key="nameIndex">
+                      <div class="form-control w-auto me-2 mb-2" v-for="(name, nameIndex) in unit.names" :key="nameIndex">
                         <label class="form-label" :for="'type'+typeIndex+'unit'+(unit.id)+'param'+name['id']+'_'+setIndex">
                           {{ name['title'] }} <small class="text-secondary">/ {{ name['name'] }}</small>
                           <span class="text-danger" v-if="!! name['expected_at']">*</span>
@@ -62,8 +66,8 @@
                                :value="name['values'][setIndex]?.value ??''"
                                :min="name['value_type'] === 'number' ? 0: null"
                                :required="!! name['expected_at']"
-                               @input="updateDataValues(name['values'][setIndex]?name['values'][setIndex].id : false,name['values'][setIndex]? name['values'][setIndex]: name['values'], $event.target.value)"
-                               @change="setInputValue(name['values'][setIndex]?name['values'][setIndex].id : false, name['id'],setIndex,$event.target.value)"
+                               @input="updateDataValues(name['values'][setIndex]? name['values'][setIndex].id : false,name['values'][setIndex]? name['values'][setIndex]: name['values'], $event.target.value)"
+                               @change="setInputValue(name['values'][setIndex]? name['values'][setIndex].id : false, name['id'],setIndex,$event.target.value)"
                         >
 
                         <select v-else class="form-select"
@@ -84,12 +88,11 @@
 
                     </div>
                   </div>
-                  <a title="Добавить еще" class="btn btn-sm btn-outline-primary mb-2"
-                     :id="'addUnit'+typeIndex+unit['id']"
-                     @click.prevent="pushToInputSet(typeIndex, unit['id'])">
+                  <a title="Добавить еще" class="btn btn-sm btn-outline-primary mb-2" :id="'addUnit'+typeIndex+unit['id']"
+                     @click="pushToInputSet(typeIndex, unit['id'])">
                     +
                   </a>
-                </div>
+                </template>
 
               </template>
             </div>
@@ -99,7 +102,7 @@
 
       <div v-if="message" :class="'fixed-bottom alert alert-dismissible fade '+ (!error? 'alert-success show ':  'alert-danger show ')">
         <div :class="{ 'text-success': !error, 'text-danger': error}">{{ message }}</div>
-        <div v-for="item in errors" class="text-danger">
+        <div v-for="item in this.errors" class="text-danger">
           {{ item }}
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -137,36 +140,40 @@ export default {
   created(){
     this.loadData();
   },
+
   methods: {
     loadData(){
+      //this.loading = true;
       axios.get(this.getUrl)
           .then(response => {
             this.error = false;
             let result = response.data;
             if (result.success) {
               this.params = result.params;
+
             }
             else {
               this.message = result.message;
             }
+
           })
       axios.get(this.getAvailableUrl)
           .then(response => {
             this.error = false;
             let result = response.data;
-            if (result.success) {
+            if (result.success && result.available) {
               this.available = result.available;
               // set inputs Sets for demonstrated units
-              for(let type in this.available){
+              for(let type in result.available){
                 this.inputSets[type] = [];
                 for (let uValue of this.available[type]){
                   let uId = uValue['id'];
                   if (uValue['demonstrated']){
                     this.inputSets[type][uId]=  [];
-
                     if (uValue['sets']){
-                      if (! uValue['sets'].length)
+                      if (! uValue['sets'].length){
                         this.inputSets[type][uId].push(0);
+                      }
                       for (let set of uValue['sets'])
                       {
                         this.inputSets[type][uId].push(set);
@@ -176,6 +183,7 @@ export default {
                   }
                 }
               }
+
             }
             else {
               this.message = result.message;
@@ -186,12 +194,13 @@ export default {
           })
     },
 
+
     // Восстановить переменные.
     reset() {
       this.loading = false;
       this.error = false;
       this.errors = [];
-      this.available = {};
+      this.available = [];
       this.inputSets = {};
       this.params = [];
       this.loadElement = {};
@@ -214,7 +223,9 @@ export default {
       else {
         this.message = 'Заполните предыдущее';
       }
+
     },
+
     checkEmptyPreviousSet(typeId, unitId){
       let result = false;
       for(let unit of this.available[typeId]){
@@ -241,6 +252,7 @@ export default {
         }
       }
     },
+
     // удалить сет инпутов
     deleteFromInputSet(typeId, unitId, index, names){
       if (names.length) {
@@ -269,6 +281,7 @@ export default {
       else
         this.inputSets[typeId][unitId].splice(index,1);
     },
+
     updateDataValues(paramId, availableElement, newValue){
       if (paramId){
         this.params[paramId].value = newValue;
@@ -385,5 +398,8 @@ export default {
 
     },
   },
+
+
+
 }
 </script>
