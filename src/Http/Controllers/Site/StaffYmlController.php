@@ -58,7 +58,7 @@ class StaffYmlController extends Controller
                         // description
                         $description =
                             (config("staff-types.stripTags", true) ?
-                                htmlspecialchars(strip_tags($employee->description),ENT_XML1) :
+                                htmlspecialchars(trim(strip_tags( html_entity_decode($employee->description))),ENT_XML1) :
                                 (! empty($employee->description) ? '<![CDATA[ '.htmlspecialchars($employee->description, ENT_XML1).' ]]>' : '' )
                             );
 
