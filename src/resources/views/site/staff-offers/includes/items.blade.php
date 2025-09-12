@@ -8,7 +8,8 @@
                     <a href="#" class="btn btn-outline-primary staff-employee__modal-btn"
                        data-bs-toggle="modal"
                        data-bs-target="#staffEmployeeModal"
-                       data-bs-whatever="{{ $employee->title }} ({{ $offer->address }})"
+                       data-bs-whatever="{{ $employee->title }}"
+                       data-bs-whatever-address="{{ $offer->address }}"
                     >
                         {{ config("site-staff.employeeBtnName") }}
                     </a>
