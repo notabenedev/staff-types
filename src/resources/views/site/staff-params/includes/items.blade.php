@@ -1,7 +1,7 @@
 <dl class="row">
     @foreach($available as $type => $units)
         @foreach($units as $unit)
-            @if ($unit['demonstrated'] && count($unit['names']))
+            @if ($unit['demonstrated'] && count($unit['names']) && count($unit['sets']))
                 <dd class="col-12 text-secondary">
                     <h2>{{ $unit['title'] }}</h2>
                 </dd>
@@ -29,13 +29,10 @@
                     @endforeach
                 @endforeach
                 @if (! $loop->last)
-                        <dd class="border-bottom border-light-subtle my-0"></dd>
+                        <dd class="border-bottom border-light-subtle my-0 mx-2"></dd>
                 @endif
                 </dd>
             @endforeach
-            @if (! $loop->last && $unit['demonstrated'])
-                    <hr class="mt-3">
-            @endif
         @endforeach
     @endforeach
 </dl>
