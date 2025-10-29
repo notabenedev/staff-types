@@ -63,22 +63,29 @@ class StaffParamActionsManager
             else
             {
                 $employee = $modelObject;
-                $departments = $employee->departments()->with('type')->get();
+                $departments = $employee->departments;
                 $employeeTypes = [];
+                $uIds = [];
                 foreach ($departments as $department){
-                    if (isset($department->type))
-                        $employeeTypes[$department->type->id] = $department->type;
+                    if (isset($department->type)) {
+                        // $employeeTypes[$department->type->id] = $department->type;
+                        foreach ($department->type->units as $unit){
+                            $uIds[] = $unit->id;
+                        }
+                    }
                 }
-                $units = StaffParamUnit::query()->where("class",'=',$unitClass)->orderBy('priority')->get();
+                $uIds = array_unique($uIds);
+                $units =  StaffParamUnit::query()->whereIn("id",$uIds)->where("class",'=',$unitClass)->orderBy('priority')->get();
                 $availableTypes = [];
-                $availableTypes[0]=(object) ['title' => $employee->title, 'units' => $units, 'allowedArray' => array_keys($employeeTypes)];
+                //$availableTypes[0]=(object) ['title' => $employee->title, 'units' => $units, 'allowedArray' => array_keys($employeeTypes)];
+                $availableTypes[0]=(object) ['title' => $employee->title, 'units' => $units];
             }
             $available = [];
             foreach ($availableTypes as $id => $type){
                 $units = $type->units;
                 // группы внутри типа
                 foreach ($units as $unit){
-                    if (isset($type->alllowedArray) && ! in_array($unit->type->id, $type->alllowedArray)) continue;
+                    //if (empty($type->alllowedArray) || ! in_array($unit->type->id, $type->alllowedArray)) continue;
                     $names  = $unit->names;
                     if ( $unit->class === $unitClass){
                         $namesArray = [];
