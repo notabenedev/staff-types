@@ -15,25 +15,26 @@
                                     {{ $name['title'] }}:
                                 </dd>
                                 <dd class="col-sm-7">
-                            @if($name['value_type'] == 'bool')
-                                @if ( $value['value'] == 'true')
+                                    @if($name['value_type'] == 'bool')
+                                        @if ( $value['value'] == 'true')
                                             Да
-                                    @else
+                                        @else
                                             -
-                                @endif
-                                @else
+                                        @endif
+                                    @else
                                         {{ $value['value'] }}
-                            @endif
+                                    @endif
+                                </dd>
                         @endif
                     @endforeach
                 @endforeach
                 @if (! $loop->last)
-                    <hr class="border-light">
+                        <dd class="border-bottom border-light-subtle my-0"></dd>
                 @endif
                 </dd>
             @endforeach
             @if (! $loop->last && $unit['demonstrated'])
-                    <hr class="border-secondary">
+                    <hr class="mt-3">
             @endif
         @endforeach
     @endforeach
