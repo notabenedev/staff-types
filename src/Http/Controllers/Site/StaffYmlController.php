@@ -34,7 +34,7 @@ class StaffYmlController extends Controller
             $categoryYml->addAttribute("id", $type->id);
 
             $setsYml = $shop->addChild("sets");
-            $departments = StaffDepartment::query()->select("id", "title","short", "slug");
+            $departments = $type->departments()->select("id", "title","short", "slug");
             $departmentsFilter = config("staff-types.departmentFilterField",null);
             if (! empty($departmentsFilter))
                 $departments->whereNotNull($departmentsFilter);
