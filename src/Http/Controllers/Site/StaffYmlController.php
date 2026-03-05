@@ -20,7 +20,6 @@ class StaffYmlController extends Controller
             $file = new \SimpleXMLElement("<?xml version='1.0' encoding='UTF-8' ?><yml_catalog></yml_catalog>");
             $file->addAttribute('date', date('Y-m-d h:i'));
             $shop = $file->addChild("shop");
-            $shop->addAttribute("version","1.0");
             $shop->addChild("name",  config("staff-types.ymlName","") );
             $shop->addChild("company",  config("staff-types.ymlCompany",""));
             $shop->addChild("url", route("home") );
@@ -53,7 +52,14 @@ class StaffYmlController extends Controller
             $employees->chunk(100, function ($employees) use ($offersYml, $type) {
                 $imageRoute =  class_exists(\App\ImageFilter::class) ? 'image-filter' : 'imagecache';
                 foreach ($employees as $employee) {
-                    if ($employee->published_at){
+                    $hasType = false;
+                    foreach ($type->departments as $department){
+                        if ($employee->hasDepartment($department->id)) {
+                            $hasType = true;
+                            break;
+                        }
+                    }
+                    if ($employee->published_at && $hasType){
                         // image
                         $imageSrc = $employee->image ? route($imageRoute, ['template' => 'original', 'filename' => $employee->image->file_name]) : null;
                         // description
@@ -64,7 +70,11 @@ class StaffYmlController extends Controller
                             );
 
                         foreach ($employee->offers as $offer){
-                            if ($offer->published_at && ($offer->price || $offer->sales_notes)){
+                            $sets = '';
+                            foreach ($offer->departments as $item){
+                                $sets = (!empty($sets) ? $sets.',' : $sets).$item->slug;
+                            }
+                            if ($offer->published_at && !empty($sets) && ($offer->price || $offer->sales_notes)){
 
                                 // generate xml
                                 $offerYml = $offersYml->addChild("offer");
@@ -72,7 +82,7 @@ class StaffYmlController extends Controller
                                 $offerYml->addAttribute("group_id", $employee->id);
 
                                 $offerYml->addChild("categoryId", $type->id);
-
+                                $offerYml->addChild("set-ids", $sets);
                                 $offerYml->addChild("name", htmlspecialchars(trim($employee->title)));
                                 $offerYml->addChild("url", route("site.employees.show", ["employee" => $employee]).'#'.$offer->slug);
 
@@ -85,12 +95,6 @@ class StaffYmlController extends Controller
                                 $offerYml->addChild("currencyId", $offer->currency);
                                 $offerYml->addChild("sales_notes", $offer->sales_notes);
 
-                                $sets = '';
-                                foreach ($offer->departments as $item){
-                                    $sets = (!empty($sets) ? $sets.',' : $sets).$item->slug;
-                                }
-
-                                $offerYml->addChild("set-ids", $sets);
                                 $offerYml->addChild("description", $description);
                                 if ($imageSrc)
                                     $offerYml->addChild("picture", "$imageSrc");
