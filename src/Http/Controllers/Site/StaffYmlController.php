@@ -20,6 +20,7 @@ class StaffYmlController extends Controller
             $file = new \SimpleXMLElement("<?xml version='1.0' encoding='UTF-8' ?><yml_catalog></yml_catalog>");
             $file->addAttribute('date', date('Y-m-d h:i'));
             $shop = $file->addChild("shop");
+            $shop->addAttribute("version","1.0");
             $shop->addChild("name",  config("staff-types.ymlName","") );
             $shop->addChild("company",  config("staff-types.ymlCompany",""));
             $shop->addChild("url", route("home") );
